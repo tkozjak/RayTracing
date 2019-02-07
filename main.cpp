@@ -6,6 +6,15 @@
 
 #include <iostream>
 #include <fstream>
+#include <vector>
+
+void forEach( std::vector<int>& values, int(*my_func)(int) ){
+
+    for( int value : values){
+        int return_value = my_func(value);
+        qDebug() << "Return value: " << return_value;
+    }
+}
 
 int main(int argc, char *argv[])
 {
@@ -21,6 +30,11 @@ int main(int argc, char *argv[])
     // add this
 
     // more
+
+    auto my_lambda = [](int value)->int{ qDebug() << "Value: " << value; return 0; };
+
+    std::vector<int> values = {1,2,3,4,5};
+    forEach( values, my_lambda );
 
 
     int nx = 200;
