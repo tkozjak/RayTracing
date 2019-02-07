@@ -27,14 +27,6 @@ int main(int argc, char *argv[])
     if (engine.rootObjects().isEmpty())
         return -1;
 
-    // add this
-
-    // more
-
-    auto my_lambda = [](int value)->int{ qDebug() << "Value: " << value; return 0; };
-
-    std::vector<int> values = {1,2,3,4,5};
-    forEach( values, my_lambda );
 
 
     int nx = 200;
@@ -45,9 +37,9 @@ int main(int argc, char *argv[])
     myfile <<"P3\n" << nx << " " << ny << "\n255\n";
     for(int j = ny-1; j >=0; j--){
         for(int i=0; i<nx; i++){
-            float r = float(i)/float(nx);
-            float g = float(j)/float(ny);
-            float b = 0.2;
+            qreal r = qreal(i)/qreal(nx);
+            qreal g = qreal(j)/qreal(ny);
+            qreal b = 0.2;
 
             int ir = int(255.99*r);
             int ig = int(255.99*g);
