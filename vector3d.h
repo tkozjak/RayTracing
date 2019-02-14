@@ -3,6 +3,9 @@
 
 #include <QtDebug>
 #include <QtMath>
+#include <QFile>
+#include <QDebug>
+
 
 class vec3 {
 
@@ -42,9 +45,28 @@ public:
 
 
     // vector components
-private:
+public:
     qreal e[3];
 };
 
+//binary operators
+vec3 operator+(const vec3 &first, const vec3 &second );
+vec3 operator-(const vec3 &first, const vec3 &second );
+vec3 operator*(const vec3 &first, const vec3 &second );
+vec3 operator/(const vec3 &first, const vec3 &second );
+
+
+// unary operators ( mul by scalar )
+vec3 operator*(const qreal scalar, const vec3 &vector );
+vec3 operator*( const vec3 &vector, const qreal scalar );
+vec3 operator/( const vec3 &vector, const qreal scalar );
+
+// standard vector functions
+vec3 cross( const vec3 &first, const vec3 &second );
+qreal dot( const vec3 &first, const vec3 &second );
+vec3 unit_vector( vec3 vector );
+
+// qDebug insert operator overload
+QDebug operator<<( QDebug output_stream, const vec3 &out_vec );
 
 #endif // VECTOR3D_H
