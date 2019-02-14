@@ -34,19 +34,14 @@ int main(int argc, char *argv[])
 
     QGuiApplication app(argc, argv);
 
-    QQmlApplicationEngine engine;
-    engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
-    if (engine.rootObjects().isEmpty())
-        return -1;
-
-
-
-    int nx = 200;
-    int ny = 100;
+    int nx = 600;
+    int ny = 300;
 
     QFile myfile("example.ppm");
     if(myfile.open(QIODevice::WriteOnly | QIODevice::Text))
     {
+        qDebug() << "Writing started";
+
         // We're going to streaming text to the file
         QTextStream txt_myfile(&myfile);
 
@@ -74,14 +69,15 @@ int main(int argc, char *argv[])
             }
         }
 
-        vec3 first( 1.0, 0.0, 0.0);
-        vec3 second( 0.0, 0.0, 1.0);
-
-        qDebug() << cross( first, second ) + cross( first, second );
-
         myfile.close();
         qDebug() << "Writing finished";
     }
+
+    QQmlApplicationEngine engine;
+    engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
+    if (engine.rootObjects().isEmpty())
+        return -1;
+
 
     return app.exec();
 }
