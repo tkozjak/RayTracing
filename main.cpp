@@ -14,12 +14,15 @@
 
 
 
-vec3 random_in_unit_sphere( QRandomGenerator &random ){
+vec3 random_in_unit_sphere( QRandomGenerator &random, vec3 &normal ){
     vec3 random_reflection_vector;
     do{
         random_reflection_vector = 2.0 * vec3( random.bounded(1.0), random.bounded(1.0),random.bounded(1.0) ) - vec3( 1.0, 1.0, 1.0 );
+
     }
-    while( random_reflection_vector.squaredLength() >= 1.0 );
+    while( (random_reflection_vector.squaredLength() >= 1.0) || (dot( unit_vector(normal), unit_vector(random_reflection_vector)) < 0.7 ) );
+
+//    qDebug() << dot( unit_vector(normal), unit_vector(random_reflection_vector));
 
     return random_reflection_vector;
 
@@ -30,17 +33,22 @@ vec3 ray_to_color( const ray& in_ray, hitable_entity *world, QRandomGenerator &r
 
     hit_record hit_rec;
 
-    if( world->hit( in_ray, 0.001, DBL_MAX, hit_rec ) &&  bounce < 4){
+    if( world->hit( in_ray, 0.001, DBL_MAX, hit_rec ) &&  bounce < 10){
 
-        vec3 reflected_vector = hit_rec.point + hit_rec.normal + random_in_unit_sphere( random );
+        vec3 reflected_vector = hit_rec.point + hit_rec.normal + random_in_unit_sphere( random, hit_rec.normal );
         return 0.5 * ray_to_color( ray( hit_rec.point, reflected_vector-hit_rec.point  ), world, random, bounce+1 );
 
 //        return 0.5 * qFabs(dot(hit_rec.normal, vec3( 0.0, 1.0, 0.0 ))) * vec3( hit_rec.normal.x()+1.0, hit_rec.normal.y()+1.0, hit_rec.normal.z() + 1.0 );
     }
     else{
+        vec3 sun_direction = unit_vector( vec3( 1.0, 0.6, 1.5 ) );
         vec3 unit_direction = unit_vector( in_ray.direction());
         qreal t = 0.5 * ( unit_direction.y() + 1.0 );
-        return( 1.0 - t ) * vec3( 1.0, 1.0, 1.0 ) + t * vec3( 0.5, 0.7, 1.0 );
+        qreal factor = dot( sun_direction, unit_direction );
+        if( factor < 0.0 ){
+            factor = 0.0;
+        }
+        return(( 1.0 - t ) * vec3( 1.0, 1.0, 1.0 ) + t * vec3( 0.5, 0.7, 1.0 )) * (factor+0.35);
     }
 }
 
@@ -53,9 +61,9 @@ int main(int argc, char *argv[])
 
     QRandomGenerator random;
 
-    int nx = 400;
-    int ny = 200;
-    int ns = 100;
+    int nx = 600;
+    int ny = 300;
+    int ns = 50;
 
     QFile myfile("example.ppm");
     if(myfile.open(QIODevice::WriteOnly | QIODevice::Text))
@@ -92,7 +100,7 @@ int main(int argc, char *argv[])
 
                     ray primary_ray = cam.get_ray( u, v );
 
-                    color = color + ray_to_color( primary_ray, world, random, 1 );
+                    color = color + ray_to_color( primary_ray, world, random, 0 );
                 }
 
                 color = color / qreal(ns);

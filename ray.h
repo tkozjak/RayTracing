@@ -15,7 +15,6 @@ public:
 
     vec3 m_origin;
     vec3 m_direction;
-
 };
 
 #endif // RAY_H

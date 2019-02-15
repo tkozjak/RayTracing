@@ -12,12 +12,10 @@ public:
         return ray( m_origin, m_lower_left_corner + u * m_horizontal + v * m_vertical - m_origin );
     }
 
-
     vec3 m_lower_left_corner;
     vec3 m_horizontal;
     vec3 m_vertical;
     vec3 m_origin;
-
 };
 
 #endif // CAMERA_H
