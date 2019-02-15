@@ -15,7 +15,11 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
     vector3d.cpp \
-    ray.cpp
+    ray.cpp \
+    hitable_entity.cpp \
+    sphere.cpp \
+    hitable_entites_list.cpp \
+    camera.cpp
 
 RESOURCES += qml.qrc
 
@@ -32,4 +36,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     vector3d.h \
-    ray.h
+    ray.h \
+    hitable_entity.h \
+    sphere.h \
+    hitable_entites_list.h \
+    camera.h

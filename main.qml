@@ -9,6 +9,7 @@ Window {
 
     Image{
         anchors.fill: parent
-        source: "file:///C:/Users/Show/Documents/Qt/build-RayTracing-Desktop_Qt_5_11_1_MSVC2015_64bit2-Debug/example.ppm"
+        smooth: false
+        source: "file:///C:/PROJECTS/Qt/build-RayTracing-Desktop_Qt_5_11_1_MSVC2017_64bit-Debug/example.ppm"
     }
 }

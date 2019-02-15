@@ -2,30 +2,47 @@
 #include <QQmlApplicationEngine>
 #include <QDebug>
 #include <QFile>
+#include <QtMath>
+#include <QRandomGenerator>
 
 #include "vector3d.h"
+#include "sphere.h"
 #include "ray.h"
+#include "hitable_entites_list.h"
+#include "camera.h"
 
-//
-bool hit_sphere( const vec3 &sphere_center, const qreal sphere_radius, const ray &input_ray){
-    vec3 o_to_c = input_ray.origin() - sphere_center;
 
-    qreal a = dot( input_ray.direction(), input_ray.direction());
-    qreal b = 2.0 * dot( o_to_c, input_ray.direction() );
-    qreal c = dot( o_to_c, o_to_c ) - sphere_radius*sphere_radius;
-    qreal discriminant = b*b - 4*a*c;
-    return( discriminant > 0.0 );
+
+
+vec3 random_in_unit_sphere( QRandomGenerator &random ){
+    vec3 random_reflection_vector;
+    do{
+        random_reflection_vector = 2.0 * vec3( random.bounded(1.0), random.bounded(1.0),random.bounded(1.0) ) - vec3( 1.0, 1.0, 1.0 );
+    }
+    while( random_reflection_vector.squaredLength() >= 1.0 );
+
+    return random_reflection_vector;
+
 }
 
 
-vec3 ray_to_color( const ray& in_ray ){
-    if( hit_sphere( vec3( 0.0, 0.0, -1.0), 0.5, in_ray ))
-        return vec3( 1.0, 0.0, 0.0 );
-    vec3 unit_direction = unit_vector( in_ray.direction());
-    qreal t = 0.5 * ( unit_direction.y() + 1.0 );
-    return( 1.0 - t ) * vec3( 1.0, 1.0, 1.0 ) + t * vec3( 0.5, 0.7, 1.0 );
-}
+vec3 ray_to_color( const ray& in_ray, hitable_entity *world, QRandomGenerator &random, int bounce ){
 
+    hit_record hit_rec;
+
+    if( world->hit( in_ray, 0.001, DBL_MAX, hit_rec ) &&  bounce < 4){
+
+        vec3 reflected_vector = hit_rec.point + hit_rec.normal + random_in_unit_sphere( random );
+        return 0.5 * ray_to_color( ray( hit_rec.point, reflected_vector-hit_rec.point  ), world, random, bounce+1 );
+
+//        return 0.5 * qFabs(dot(hit_rec.normal, vec3( 0.0, 1.0, 0.0 ))) * vec3( hit_rec.normal.x()+1.0, hit_rec.normal.y()+1.0, hit_rec.normal.z() + 1.0 );
+    }
+    else{
+        vec3 unit_direction = unit_vector( in_ray.direction());
+        qreal t = 0.5 * ( unit_direction.y() + 1.0 );
+        return( 1.0 - t ) * vec3( 1.0, 1.0, 1.0 ) + t * vec3( 0.5, 0.7, 1.0 );
+    }
+}
 
 
 int main(int argc, char *argv[])
@@ -34,8 +51,11 @@ int main(int argc, char *argv[])
 
     QGuiApplication app(argc, argv);
 
-    int nx = 600;
-    int ny = 300;
+    QRandomGenerator random;
+
+    int nx = 400;
+    int ny = 200;
+    int ns = 100;
 
     QFile myfile("example.ppm");
     if(myfile.open(QIODevice::WriteOnly | QIODevice::Text))
@@ -51,15 +71,31 @@ int main(int argc, char *argv[])
         vec3 vertical( 0.0, 2.0, 0.0 );
         vec3 origin( 0.0, 0.0, 0.0 );
 
+        hitable_entity *list[3];
+
+        list[0] = new sphere( vec3( 0.0, 0.0, -1.0), 0.5 );
+        list[1] = new sphere( vec3( 0.0, -100.5, -1.0), 100.0);
+        list[2] = new sphere( vec3( 1.1, 0.0, -1.0), 0.5 );
+
+        hitable_entity *world = new hitable_entites_list( list, 3 );
+
+        camera cam;
+
         txt_myfile <<"P3\n" << nx << " " << ny << "\n255\n";
         for(int j = ny-1; j >=0; j--){
             for(int i=0; i<nx; i++){
 
-                qreal u = qreal(i) / qreal(nx);
-                qreal v = qreal(j) / qreal(ny);
+                vec3 color( 0.0 ,0.0, 0.0 );
+                for( int s=0; s < ns; s++){
+                    qreal u = qreal( i + random.bounded(1.0)) / qreal(nx);
+                    qreal v = qreal( j + random.bounded(1.0)) / qreal(ny);
 
-                ray primary_ray( origin, lower_left_corner + u*horizontal +v*vertical);
-                vec3 color = ray_to_color(primary_ray);
+                    ray primary_ray = cam.get_ray( u, v );
+
+                    color = color + ray_to_color( primary_ray, world, random, 1 );
+                }
+
+                color = color / qreal(ns);
 
                 int ir = int(255.99*color[0]);
                 int ig = int(255.99*color[1]);
