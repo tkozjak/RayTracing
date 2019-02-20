@@ -10,35 +10,27 @@
 #include "ray.h"
 #include "hitable_entites_list.h"
 #include "camera.h"
+#include "lambertian.h"
+#include "metal.h"
+#include "material.h"
 
 
 
-
-vec3 random_in_unit_sphere( QRandomGenerator &random, vec3 &normal ){
-    vec3 random_reflection_vector;
-    do{
-        random_reflection_vector = 2.0 * vec3( random.bounded(1.0), random.bounded(1.0),random.bounded(1.0) ) - vec3( 1.0, 1.0, 1.0 );
-
-    }
-    while( (random_reflection_vector.squaredLength() >= 1.0) || (dot( unit_vector(normal), unit_vector(random_reflection_vector)) < 0.7 ) );
-
-//    qDebug() << dot( unit_vector(normal), unit_vector(random_reflection_vector));
-
-    return random_reflection_vector;
-
-}
-
-
-vec3 ray_to_color( const ray& in_ray, hitable_entity *world, QRandomGenerator &random, int bounce ){
+vec3 ray_to_color( const ray& in_ray, hitable_entity *world, int bounce ){
 
     hit_record hit_rec;
 
-    if( world->hit( in_ray, 0.001, DBL_MAX, hit_rec ) &&  bounce < 10){
+    if( world->hit( in_ray, 0.001, DBL_MAX, hit_rec )){
 
-        vec3 reflected_vector = hit_rec.point + hit_rec.normal + random_in_unit_sphere( random, hit_rec.normal );
-        return 0.5 * ray_to_color( ray( hit_rec.point, reflected_vector-hit_rec.point  ), world, random, bounce+1 );
+        ray scattered;
+        vec3 attenuation;
 
-//        return 0.5 * qFabs(dot(hit_rec.normal, vec3( 0.0, 1.0, 0.0 ))) * vec3( hit_rec.normal.x()+1.0, hit_rec.normal.y()+1.0, hit_rec.normal.z() + 1.0 );
+        if( bounce < 10 && hit_rec.p_mat->scatter( in_ray, hit_rec, attenuation, scattered ) ){
+            return attenuation * ray_to_color( scattered, world, bounce+1 );
+        }
+        else{
+            return vec3( 0.0, 0.0, 0.0 );
+        }
     }
     else{
         vec3 sun_direction = unit_vector( vec3( 1.0, 0.6, 1.5 ) );
@@ -61,9 +53,9 @@ int main(int argc, char *argv[])
 
     QRandomGenerator random;
 
-    int nx = 600;
-    int ny = 300;
-    int ns = 50;
+    int nx = 1800;
+    int ny = 900;
+    int ns = 100;
 
     QFile myfile("example.ppm");
     if(myfile.open(QIODevice::WriteOnly | QIODevice::Text))
@@ -81,9 +73,11 @@ int main(int argc, char *argv[])
 
         hitable_entity *list[3];
 
-        list[0] = new sphere( vec3( 0.0, 0.0, -1.0), 0.5 );
-        list[1] = new sphere( vec3( 0.0, -100.5, -1.0), 100.0);
-        list[2] = new sphere( vec3( 1.1, 0.0, -1.0), 0.5 );
+//        metal d;
+
+        list[0] = new sphere( vec3( 0.0, 0.0, -1.0), 0.5, new lambertian( nullptr, vec3(0.8, 0.3, 0.3 ), &random ) );
+        list[1] = new sphere( vec3( 0.0, -100.5, -1.0), 100.0,  new lambertian( nullptr, vec3(0.8, 0.3, 0.0 ), &random ) );
+        list[2] = new sphere( vec3( 1.1, 0.0, -1.0), 0.5,  new metal( nullptr, vec3(0.2, 0.9, 0.1 ), &random )  );
 
         hitable_entity *world = new hitable_entites_list( list, 3 );
 
@@ -93,6 +87,8 @@ int main(int argc, char *argv[])
         for(int j = ny-1; j >=0; j--){
             for(int i=0; i<nx; i++){
 
+                qDebug() << "Ray :" << j << ", " << i;
+
                 vec3 color( 0.0 ,0.0, 0.0 );
                 for( int s=0; s < ns; s++){
                     qreal u = qreal( i + random.bounded(1.0)) / qreal(nx);
@@ -100,7 +96,7 @@ int main(int argc, char *argv[])
 
                     ray primary_ray = cam.get_ray( u, v );
 
-                    color = color + ray_to_color( primary_ray, world, random, 0 );
+                    color = color + ray_to_color( primary_ray, world, 0 );
                 }
 
                 color = color / qreal(ns);

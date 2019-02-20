@@ -5,9 +5,9 @@ sphere::sphere()
 
 }
 
-sphere::sphere(vec3 center, qreal radius) : m_center(center), m_radius(radius)
+sphere::sphere(vec3 center, qreal radius, material *lambertian) : m_center(center), m_radius(radius)
 {
-
+    m_material = lambertian;
 }
 
 bool sphere::hit(const ray &in_ray, const qreal t_min, const qreal t_max, hit_record &record) const
@@ -27,6 +27,7 @@ bool sphere::hit(const ray &in_ray, const qreal t_min, const qreal t_max, hit_re
             record.t = temp;
             record.point = in_ray.point_at_parameter(record.t);
             record.normal = (record.point - m_center)/m_radius;
+            record.p_mat = m_material;
             return true;
         }
         temp = ( -b + qSqrt(discriminant) ) / a ;
@@ -34,6 +35,7 @@ bool sphere::hit(const ray &in_ray, const qreal t_min, const qreal t_max, hit_re
             record.t = temp;
             record.point = in_ray.point_at_parameter(record.t);
             record.normal = (record.point - m_center)/m_radius;
+            record.p_mat = m_material;
             return true;
         }
 

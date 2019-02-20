@@ -19,7 +19,10 @@ SOURCES += \
     hitable_entity.cpp \
     sphere.cpp \
     hitable_entites_list.cpp \
-    camera.cpp
+    camera.cpp \
+    material.cpp \
+    lambertian.cpp \
+    metal.cpp
 
 RESOURCES += qml.qrc
 
@@ -40,4 +43,7 @@ HEADERS += \
     hitable_entity.h \
     sphere.h \
     hitable_entites_list.h \
-    camera.h
+    camera.h \
+    material.h \
+    lambertian.h \
+    metal.h
