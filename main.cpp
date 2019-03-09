@@ -13,7 +13,7 @@
 #include "lambertian.h"
 #include "metal.h"
 #include "material.h"
-
+#include "dieletric.h"
 
 
 vec3 ray_to_color( const ray& in_ray, hitable_entity *world, int bounce ){
@@ -53,9 +53,9 @@ int main(int argc, char *argv[])
 
     QRandomGenerator random;
 
-    int nx = 1800;
-    int ny = 900;
-    int ns = 100;
+    int nx = 1200;
+    int ny = 600;
+    int ns = 400;
 
     QFile myfile("example.ppm");
     if(myfile.open(QIODevice::WriteOnly | QIODevice::Text))
@@ -71,17 +71,20 @@ int main(int argc, char *argv[])
         vec3 vertical( 0.0, 2.0, 0.0 );
         vec3 origin( 0.0, 0.0, 0.0 );
 
-        hitable_entity *list[3];
+        hitable_entity *list[4];
 
 //        metal d;
 
         list[0] = new sphere( vec3( 0.0, 0.0, -1.0), 0.5, new lambertian( nullptr, vec3(0.8, 0.3, 0.3 ), &random ) );
         list[1] = new sphere( vec3( 0.0, -100.5, -1.0), 100.0,  new lambertian( nullptr, vec3(0.8, 0.3, 0.0 ), &random ) );
-        list[2] = new sphere( vec3( 1.1, 0.0, -1.0), 0.5,  new metal( nullptr, vec3(0.2, 0.9, 0.1 ), &random )  );
+        list[2] = new sphere( vec3( 1.1, 0.0, -1.0), 0.5,  new metal( nullptr, vec3(0.2, 0.9, 0.1 ), 0.15, &random )  );
+        list[3] = new sphere( vec3( -0.95, -0.2, -1.2), 0.3,  new dieletric( nullptr, 1.5, &random ));
 
-        hitable_entity *world = new hitable_entites_list( list, 3 );
 
-        camera cam;
+        hitable_entity *world = new hitable_entites_list( list, 4 );
+
+//        camera cam( 90, qreal(nx)/qreal(ny));
+        camera cam( vec3( -2,2,1 ), vec3( 0,0,-1 ), vec3( 0,1,0 ), 90, qreal(nx)/qreal(ny) );
 
         txt_myfile <<"P3\n" << nx << " " << ny << "\n255\n";
         for(int j = ny-1; j >=0; j--){
@@ -100,6 +103,9 @@ int main(int argc, char *argv[])
                 }
 
                 color = color / qreal(ns);
+
+                // gamma 2.0
+//                color = vec3(qSqrt(color[0]), qSqrt(color[1]), qSqrt(color[2]));
 
                 int ir = int(255.99*color[0]);
                 int ig = int(255.99*color[1]);

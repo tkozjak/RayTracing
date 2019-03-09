@@ -58,8 +58,8 @@ vec3 operator/( const vec3 &vector, const qreal scalar ){
 vec3 cross(const vec3 &first, const vec3 &second)
 {
     return vec3( first.e[1]*second.e[2]-first.e[2]*second.e[1],
-            -first.e[0]*second.e[2]-first.e[2]*second.e[0],
-            first.e[0]*second.e[1]-first.e[1]*second.e[0]);
+            (-(first.e[0]*second.e[2]-first.e[2]*second.e[0])),
+            (first.e[0]*second.e[1]-first.e[1]*second.e[0]));
 
 }
 

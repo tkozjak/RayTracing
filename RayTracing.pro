@@ -22,7 +22,8 @@ SOURCES += \
     camera.cpp \
     material.cpp \
     lambertian.cpp \
-    metal.cpp
+    metal.cpp \
+    dieletric.cpp
 
 RESOURCES += qml.qrc
 
@@ -46,4 +47,5 @@ HEADERS += \
     camera.h \
     material.h \
     lambertian.h \
-    metal.h
+    metal.h \
+    dieletric.h
