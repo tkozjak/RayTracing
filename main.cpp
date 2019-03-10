@@ -33,14 +33,18 @@ vec3 ray_to_color( const ray& in_ray, hitable_entity *world, int bounce ){
         }
     }
     else{
-        vec3 sun_direction = unit_vector( vec3( 1.0, 0.6, 1.5 ) );
-        vec3 unit_direction = unit_vector( in_ray.direction());
-        qreal t = 0.5 * ( unit_direction.y() + 1.0 );
-        qreal factor = dot( sun_direction, unit_direction );
-        if( factor < 0.0 ){
-            factor = 0.0;
-        }
-        return(( 1.0 - t ) * vec3( 1.0, 1.0, 1.0 ) + t * vec3( 0.5, 0.7, 1.0 )) * (factor+0.35);
+//        vec3 sun_direction = unit_vector( vec3( 1.0, 0.6, 1.5 ) );
+//        vec3 unit_direction = unit_vector( in_ray.direction());
+//        qreal t = 0.5 * ( unit_direction.y() + 1.0 );
+//        qreal factor = dot( sun_direction, unit_direction );
+//        if( factor < 0.0 ){
+//            factor = 0.0;
+//        }
+//        return(( 1.0 - t ) * vec3( 1.0, 1.0, 1.0 ) + t * vec3( 0.5, 0.7, 1.0 )) * (factor+0.35);
+
+        vec3 unit_direction = unit_vector( in_ray.direction() );
+        qreal t = 0.5 * (unit_direction.y() + 1.0 );
+        return ( 1.0 - t ) * vec3( 1.0, 1.0, 1.0 ) + t * vec3( 0.5, 0.7, 1.0 );
     }
 }
 
@@ -53,9 +57,9 @@ int main(int argc, char *argv[])
 
     QRandomGenerator random;
 
-    int nx = 1200;
-    int ny = 600;
-    int ns = 400;
+    int nx = 600;
+    int ny = 300;
+    int ns = 100;
 
     QFile myfile("example.ppm");
     if(myfile.open(QIODevice::WriteOnly | QIODevice::Text))
@@ -83,8 +87,14 @@ int main(int argc, char *argv[])
 
         hitable_entity *world = new hitable_entites_list( list, 4 );
 
+        vec3 lookfrom( 3, 3,2);
+        vec3 lookat( 0,0,-1);
+        qreal dist_to_focus = (lookfrom-lookat).length();
+        qreal aperture = 0.3;
 //        camera cam( 90, qreal(nx)/qreal(ny));
-        camera cam( vec3( -2,2,1 ), vec3( 0,0,-1 ), vec3( 0,1,0 ), 90, qreal(nx)/qreal(ny) );
+//        camera cam( vec3( -0.5,1.5,0 ), vec3( 0,0,-1 ), vec3( 0,1,0 ), 90, qreal(nx)/qreal(ny) );
+        camera cam( lookfrom, lookat, vec3( 0,1,0 ), 20, qreal(nx)/qreal(ny), aperture, dist_to_focus, &random  );
+
 
         txt_myfile <<"P3\n" << nx << " " << ny << "\n255\n";
         for(int j = ny-1; j >=0; j--){
