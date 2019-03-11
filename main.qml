@@ -3,8 +3,8 @@ import QtQuick.Window 2.11
 
 Window {
     visible: true
-    width: 1200
-    height: 600
+    width: 1800
+    height: 900
     title: qsTr("Ray Tracing in a Weekend")
 
     Image{

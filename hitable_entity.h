@@ -25,3 +25,5 @@ public:
 };
 
 #endif // HITABLE_ENTITY_H
+
+

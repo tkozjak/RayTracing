@@ -23,7 +23,9 @@ SOURCES += \
     material.cpp \
     lambertian.cpp \
     metal.cpp \
-    dieletric.cpp
+    dieletric.cpp \
+    hitable_qentity.cpp \
+    helper_structs.cpp
 
 RESOURCES += qml.qrc
 
@@ -48,4 +50,6 @@ HEADERS += \
     material.h \
     lambertian.h \
     metal.h \
-    dieletric.h
+    dieletric.h \
+    hitable_qentity.h \
+    helper_structs.h

@@ -4,6 +4,7 @@
 #include <QFile>
 #include <QtMath>
 #include <QRandomGenerator>
+#include <QThread>
 
 #include "vector3d.h"
 #include "sphere.h"
@@ -33,18 +34,18 @@ vec3 ray_to_color( const ray& in_ray, hitable_entity *world, int bounce ){
         }
     }
     else{
-//        vec3 sun_direction = unit_vector( vec3( 1.0, 0.6, 1.5 ) );
-//        vec3 unit_direction = unit_vector( in_ray.direction());
-//        qreal t = 0.5 * ( unit_direction.y() + 1.0 );
-//        qreal factor = dot( sun_direction, unit_direction );
-//        if( factor < 0.0 ){
-//            factor = 0.0;
-//        }
-//        return(( 1.0 - t ) * vec3( 1.0, 1.0, 1.0 ) + t * vec3( 0.5, 0.7, 1.0 )) * (factor+0.35);
+        vec3 sun_direction = unit_vector( vec3( 1.0, 0.6, 1.5 ) );
+        vec3 unit_direction = unit_vector( in_ray.direction());
+        qreal t = 0.5 * ( unit_direction.y() + 1.0 );
+        qreal factor = dot( sun_direction, unit_direction );
+        if( factor < 0.0 ){
+            factor = 0.0;
+        }
+        return(( 1.0 - t ) * vec3( 1.0, 1.0, 1.0 ) + t * vec3( 0.5, 0.7, 1.0 )) * (factor+0.35);
 
-        vec3 unit_direction = unit_vector( in_ray.direction() );
-        qreal t = 0.5 * (unit_direction.y() + 1.0 );
-        return ( 1.0 - t ) * vec3( 1.0, 1.0, 1.0 ) + t * vec3( 0.5, 0.7, 1.0 );
+//        vec3 unit_direction = unit_vector( in_ray.direction() );
+//        qreal t = 0.5 * (unit_direction.y() + 1.0 );
+//        return ( 1.0 - t ) * vec3( 1.0, 1.0, 1.0 ) + t * vec3( 0.5, 0.7, 1.0 );
     }
 }
 
@@ -57,8 +58,10 @@ int main(int argc, char *argv[])
 
     QRandomGenerator random;
 
-    int nx = 600;
-    int ny = 300;
+    qDebug() << "IDEAL CPUs: " << QThread::idealThreadCount();
+
+    int nx = 1800;
+    int ny = 900;
     int ns = 100;
 
     QFile myfile("example.ppm");
@@ -82,15 +85,15 @@ int main(int argc, char *argv[])
         list[0] = new sphere( vec3( 0.0, 0.0, -1.0), 0.5, new lambertian( nullptr, vec3(0.8, 0.3, 0.3 ), &random ) );
         list[1] = new sphere( vec3( 0.0, -100.5, -1.0), 100.0,  new lambertian( nullptr, vec3(0.8, 0.3, 0.0 ), &random ) );
         list[2] = new sphere( vec3( 1.1, 0.0, -1.0), 0.5,  new metal( nullptr, vec3(0.2, 0.9, 0.1 ), 0.15, &random )  );
-        list[3] = new sphere( vec3( -0.95, -0.2, -1.2), 0.3,  new dieletric( nullptr, 1.5, &random ));
+        list[3] = new sphere( vec3( -0.95, -0.1, -1.2), 0.3,  new dieletric( nullptr, 1.5, &random ));
 
 
         hitable_entity *world = new hitable_entites_list( list, 4 );
 
-        vec3 lookfrom( 3, 3,2);
-        vec3 lookat( 0,0,-1);
+        vec3 lookfrom( 1, 3,3);
+        vec3 lookat( 0.3,0,-1);
         qreal dist_to_focus = (lookfrom-lookat).length();
-        qreal aperture = 0.3;
+        qreal aperture = 0.7;
 //        camera cam( 90, qreal(nx)/qreal(ny));
 //        camera cam( vec3( -0.5,1.5,0 ), vec3( 0,0,-1 ), vec3( 0,1,0 ), 90, qreal(nx)/qreal(ny) );
         camera cam( lookfrom, lookat, vec3( 0,1,0 ), 20, qreal(nx)/qreal(ny), aperture, dist_to_focus, &random  );
