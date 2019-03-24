@@ -6,6 +6,8 @@
 #include <QRandomGenerator>
 #include <QThread>
 
+#include "main_scene.h"
+
 #include "vector3d.h"
 #include "sphere.h"
 #include "ray.h"
@@ -64,6 +66,7 @@ int main(int argc, char *argv[])
     int ny = 900;
     int ns = 100;
 
+  /*
     QFile myfile("example.ppm");
     if(myfile.open(QIODevice::WriteOnly | QIODevice::Text))
     {
@@ -131,6 +134,11 @@ int main(int argc, char *argv[])
         myfile.close();
         qDebug() << "Writing finished";
     }
+*/
+
+    main_scene my_scene;
+
+    my_scene.draw_debug_scene();
 
     QQmlApplicationEngine engine;
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));

@@ -25,7 +25,8 @@ SOURCES += \
     metal.cpp \
     dieletric.cpp \
     hitable_qentity.cpp \
-    helper_structs.cpp
+    helper_structs.cpp \
+    main_scene.cpp
 
 RESOURCES += qml.qrc
 
@@ -52,4 +53,5 @@ HEADERS += \
     metal.h \
     dieletric.h \
     hitable_qentity.h \
-    helper_structs.h
+    helper_structs.h \
+    main_scene.h
