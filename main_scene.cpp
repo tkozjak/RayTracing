@@ -15,9 +15,21 @@ main_scene::main_scene(QObject *parent) : QObject(parent)
     m_p_hitable_entities_list.append(S3);
     m_p_hitable_entities_list.append(S4);
 
-    vec3 lookfrom( 10, 1,1);
-    vec3 lookat( 0.3,0,-1);
-    qreal dist_to_focus = (lookfrom-lookat).length();
+
+    // qspheres
+    hitable_qentity *SQ1 = new qsphere( this, vec3( 0.0, 0.0, -1.0), 0.5, new lambertian( this, vec3(0.8, 0.3, 0.3 ), m_random ));
+    hitable_qentity *SQ2 = new qsphere( this, vec3( 0.0, -100.5, -1.0), 100.0,  new lambertian( this, vec3(0.8, 0.3, 0.0 ), m_random ));
+    hitable_qentity *SQ3 = new qsphere( this, vec3( 1.1, 0.0, -1.0), 0.5,  new lambertian( this, vec3(0.2, 0.9, 0.1 ), m_random ));
+    hitable_qentity *SQ4 = new qsphere( this, vec3( -0.95, -0.1, -1.2), 0.3,  new lambertian( this, vec3(0.3, 0.8, 0.6 ), m_random ));
+
+    m_p_hitable_qentities_list.append(SQ1);
+    m_p_hitable_qentities_list.append(SQ2);
+    m_p_hitable_qentities_list.append(SQ3);
+    m_p_hitable_qentities_list.append(SQ4);
+
+    vec3 lookfrom( 1, 1, 10 );
+    vec3 lookat( 0.3,0,-1 );
+    qreal dist_to_focus = ( lookfrom-lookat ).length();
     qreal aperture = 0.0;
 
     m_camera = new camera( lookfrom, lookat, vec3( 0,1,0 ), 20, qreal(nx)/qreal(ny), aperture, dist_to_focus, m_random  );
@@ -81,9 +93,19 @@ void main_scene::draw_debug_scene()
 vec3 main_scene::ray_to_color(const ray &in_ray, int bounce)
 {
 //    return vec3( 1.0, 0.0, 0.0 );
+    hit_record hit_rec;
 
-    if( any_hit(in_ray, m_t_min, m_t_max ) ){
-        return vec3( 1.0, 0.0, 0.0 );
+    if( any_hit( in_ray, m_t_min, m_t_max, hit_rec ) ){
+
+        ray scattered_ray;
+        vec3 attenuation;
+
+        if( bounce < 15 && hit_rec.p_mat->scatter( in_ray, hit_rec, attenuation, scattered_ray ) ){
+            return attenuation * ray_to_color( scattered_ray, bounce+1 );
+        }
+        else{
+            return vec3( 0.0, 0.0, 0.0 );
+        }
     }
     else{
         vec3 sun_direction = unit_vector( vec3( 1.0, 0.6, 1.5 ) );
@@ -101,7 +123,7 @@ vec3 main_scene::ray_to_color(const ray &in_ray, int bounce)
     }
 }
 
-bool main_scene::any_hit(const ray &in_ray, qreal t_min, qreal t_max/*, hit_record &record*/)
+bool main_scene::any_hit(const ray &in_ray, qreal t_min, qreal t_max, hit_record &record )
 {
     hit_record temp_hit_record;
 
@@ -110,11 +132,11 @@ bool main_scene::any_hit(const ray &in_ray, qreal t_min, qreal t_max/*, hit_reco
     qreal closest_so_far = t_max;
 
     // iterate over list opf hitable entites return true if contditions of 'hit' are satisfied
-    for( int i = 0; i < m_p_hitable_entities_list.count(); i++ ){
-        if( m_p_hitable_entities_list.at(i)->hit( in_ray, t_min, closest_so_far, temp_hit_record)){
+    for( int i = 0; i < m_p_hitable_qentities_list.count(); i++ ){
+        if( m_p_hitable_qentities_list.at(i)->hit( in_ray, t_min, closest_so_far, temp_hit_record)){
             hit_anything = true;
-//            closest_so_far = temp_hit_record.t;
-//            m_hit_record = temp_hit_record;
+            closest_so_far = temp_hit_record.t;
+            record = temp_hit_record;
         }
     }
     return hit_anything;

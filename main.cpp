@@ -25,9 +25,14 @@ vec3 ray_to_color( const ray& in_ray, hitable_entity *world, int bounce ){
 
     if( world->hit( in_ray, 0.001, DBL_MAX, hit_rec )){
 
-        ray scattered;
-        vec3 attenuation;
+        ray scattered; // scattered ray we cast into our scene
+        vec3 attenuation; // reflected color is written into this
 
+//        qDebug() << "Bounce: " << bounce << ", attenuation: " << attenuation;
+
+        // check if bounces are within limit and scatter our ray based on material properties
+        // this recursion returns color that is not black only if path hits environment ( only emission source )
+        // else it returns black
         if( bounce < 10 && hit_rec.p_mat->scatter( in_ray, hit_rec, attenuation, scattered ) ){
             return attenuation * ray_to_color( scattered, world, bounce+1 );
         }
@@ -62,11 +67,11 @@ int main(int argc, char *argv[])
 
     qDebug() << "IDEAL CPUs: " << QThread::idealThreadCount();
 
-    int nx = 1800;
-    int ny = 900;
-    int ns = 100;
+//    int nx = 800;
+//    int ny = 600;
+//    int ns = 10;
 
-  /*
+/*
     QFile myfile("example.ppm");
     if(myfile.open(QIODevice::WriteOnly | QIODevice::Text))
     {
@@ -93,10 +98,10 @@ int main(int argc, char *argv[])
 
         hitable_entity *world = new hitable_entites_list( list, 4 );
 
-        vec3 lookfrom( 1, 3,3);
+        vec3 lookfrom( 1, 1,5);
         vec3 lookat( 0.3,0,-1);
         qreal dist_to_focus = (lookfrom-lookat).length();
-        qreal aperture = 0.7;
+        qreal aperture = 0.0;
 //        camera cam( 90, qreal(nx)/qreal(ny));
 //        camera cam( vec3( -0.5,1.5,0 ), vec3( 0,0,-1 ), vec3( 0,1,0 ), 90, qreal(nx)/qreal(ny) );
         camera cam( lookfrom, lookat, vec3( 0,1,0 ), 20, qreal(nx)/qreal(ny), aperture, dist_to_focus, &random  );
@@ -106,7 +111,7 @@ int main(int argc, char *argv[])
         for(int j = ny-1; j >=0; j--){
             for(int i=0; i<nx; i++){
 
-                qDebug() << "Ray :" << j << ", " << i;
+//                qDebug() << "Ray :" << j << ", " << i;
 
                 vec3 color( 0.0 ,0.0, 0.0 );
                 for( int s=0; s < ns; s++){

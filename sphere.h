@@ -11,7 +11,7 @@ public:
 
     sphere( vec3 center, qreal radius, material *lambertian );
 
-    virtual bool hit( const ray &in_ray, const qreal t_min, const qreal t_max, hit_record &record ) const;
+    virtual bool hit( const ray &in_ray, const qreal t_min, const qreal t_max, hit_record &record ) const override;
 
 public:
     vec3 m_center;

@@ -4,3 +4,8 @@ hitable_entity::hitable_entity()
 {
 
 }
+
+hitable_entity::~hitable_entity()
+{
+
+}

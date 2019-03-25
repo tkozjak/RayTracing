@@ -15,9 +15,9 @@ class hitable_qentity : public QObject
 {
     Q_OBJECT
 public:
-    explicit hitable_qentity(QObject *parent = nullptr);
+    explicit hitable_qentity( QObject *parent = nullptr );
 
-//    virtual bool hit( const ray &in_ray, qreal t_min, qreal t_max, hit_record &record ) const = 0;
+    virtual bool hit( const ray &in_ray, qreal t_min, qreal t_max, hit_record &record ) const = 0;
 
 signals:
 

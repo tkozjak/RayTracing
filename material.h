@@ -12,7 +12,7 @@ class material : public QObject
 public:
     explicit material(QObject *parent = nullptr);
 
-    virtual bool scatter( const ray &in_ray, const hit_record &hit_rec, vec3 &attenuatino, ray &scattered ) = 0;
+    virtual bool scatter( const ray &in_ray, const hit_record &hit_rec, vec3 &attenuation, ray &scattered ) = 0;
 
 signals:
 
