@@ -18,7 +18,7 @@ main_scene::main_scene(QObject *parent) : QObject(parent)
     vec3 lookfrom( 10, 1,1);
     vec3 lookat( 0.3,0,-1);
     qreal dist_to_focus = (lookfrom-lookat).length();
-    qreal aperture = 0.7;
+    qreal aperture = 0.0;
 
     m_camera = new camera( lookfrom, lookat, vec3( 0,1,0 ), 20, qreal(nx)/qreal(ny), aperture, dist_to_focus, m_random  );
 
