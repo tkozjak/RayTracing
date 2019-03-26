@@ -6,10 +6,10 @@ main_scene::main_scene(QObject *parent) : QObject(parent)
     m_random = new QRandomGenerator;
 
     // qspheres
-    hitable_qentity *SQ1 = new qsphere( this, vec3( 0.0, 0.0, -1.0), 0.5, new lambertian( this, vec3(0.8, 0.3, 0.3 ), m_random ));
-    hitable_qentity *SQ2 = new qsphere( this, vec3( 0.0, -100.5, -1.0), 100.0,  new lambertian( this, vec3(1.0, 1.0, 1.0 ), m_random ));
-    hitable_qentity *SQ3 = new qsphere( this, vec3( 1.1, 0.0, -1.0), 0.5,  new metal( this, vec3(0.2, 0.9, 0.1 ), 0.1, m_random ));
-    hitable_qentity *SQ4 = new qsphere( this, vec3( -0.95, -0.1, -1.2), 0.3,  new dieletric( this, 1.4, m_random ));
+    hitable_qentity *SQ1 = new qsphere( this, vec3( 0.0, 0.0, -1.0), vec3( 0.0, 0.02, -1.0), 0.0, 0.1, 0.5, new lambertian( this, vec3(0.8, 0.3, 0.3 ), m_random ));
+    hitable_qentity *SQ2 = new qsphere( this, vec3( 0.0, -100.5, -1.0), vec3( 0.0, -100.5, -1.0), 0.0, 1.0, 100.0,  new lambertian( this, vec3(1.0, 1.0, 1.0 ), m_random ));
+    hitable_qentity *SQ3 = new qsphere( this, vec3( 1.1, 0.0, -1.0), vec3( 1.1, 0.2, -1.0), 0.0, 1.0, 0.5,  new metal( this, vec3(0.2, 0.9, 0.1 ), 0.1, m_random ));
+    hitable_qentity *SQ4 = new qsphere( this, vec3( -0.95, -0.1, -1.2), vec3( -0.95, -0.0, -1.2), 0.0, 1.0, 0.3,  new dieletric( this, 1.4, m_random ));
 
     m_p_hitable_qentities_list.append(SQ1);
     m_p_hitable_qentities_list.append(SQ2);
@@ -21,7 +21,7 @@ main_scene::main_scene(QObject *parent) : QObject(parent)
     qreal dist_to_focus = ( lookfrom-lookat ).length();
     qreal aperture = 0.0;
 
-    m_camera = new camera( lookfrom, lookat, vec3( 0, 1, 0 ), 20, qreal(nx)/qreal(ny), aperture, dist_to_focus, m_random  );
+    m_camera = new camera( lookfrom, lookat, vec3( 0, 1, 0 ), 20, qreal(nx)/qreal(ny), aperture, dist_to_focus, 0.0, 1.0, m_random  );
 
 }
 
@@ -139,7 +139,7 @@ vec3 main_scene::ray_to_color(const ray &in_ray, int bounce) const
         ray scattered_ray;
         vec3 attenuation;
 
-        if( bounce < 50 && hit_rec.p_mat->scatter( in_ray, hit_rec, attenuation, scattered_ray ) ){
+        if( bounce < 20 && hit_rec.p_mat->scatter( in_ray, hit_rec, attenuation, scattered_ray ) ){
             return attenuation * ray_to_color( scattered_ray, bounce+1 );
         }
         else{

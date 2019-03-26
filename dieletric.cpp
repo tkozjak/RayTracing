@@ -19,6 +19,7 @@ bool dieletric::scatter(const ray &in_ray, const hit_record &hit_rec, vec3 &atte
     qreal cosine;
 
     vec3 refracted;
+
     if( dot( in_ray.direction(), hit_rec.normal) > 0.0 ){
         outward_normal = -1 * hit_rec.normal; // NE FUNKCIONIRA NEGATIVE
         ni_over_nt = m_refraction_indx;
@@ -36,15 +37,15 @@ bool dieletric::scatter(const ray &in_ray, const hit_record &hit_rec, vec3 &atte
         reflect_prob = schlick( cosine, m_refraction_indx );
     }
     else{
-        scattered = ray( hit_rec.point, reflected );
+        scattered = ray( hit_rec.point, reflected, in_ray.time() );
         return false;
     }
 
     if( m_random->bounded(1.0) < reflect_prob ){
-        scattered = ray( hit_rec.point, reflected );
+        scattered = ray( hit_rec.point, reflected, in_ray.time() );
     }
     else {
-        scattered = ray( hit_rec.point, refracted );
+        scattered = ray( hit_rec.point, refracted, in_ray.time() );
     }
     return true;
 }

@@ -43,9 +43,12 @@ camera::camera(vec3 look_from, vec3 look_at, vec3 view_up, qreal vfof, qreal asp
     m_vertical = 2 * half_height * v;
 }
 
-camera::camera(vec3 look_from, vec3 look_at, vec3 view_up, qreal vfof, qreal aspect, qreal aperture, qreal focal_dist, QRandomGenerator *random)
+camera::camera(vec3 look_from, vec3 look_at, vec3 view_up, qreal vfof, qreal aspect, qreal aperture, qreal focal_dist, qreal in_time_1, qreal in_time_2, QRandomGenerator *random)
 {
     m_random = random;
+
+    m_time01 = in_time_1;
+    m_time02 = in_time_2;
 
     m_lens_radius = aperture / 2.0;
 

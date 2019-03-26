@@ -9,7 +9,7 @@ lambertian::lambertian(QObject *parent, const vec3 &albedo, QRandomGenerator *ra
 bool lambertian::scatter(const ray &in_ray, const hit_record &hit_rec, vec3 &attenuation, ray &scattered)
 {
     vec3 target = hit_rec.point + hit_rec.normal + random_in_unit_sphere();
-    scattered = ray( hit_rec.point , target - hit_rec.point);
+    scattered = ray( hit_rec.point , target - hit_rec.point, in_ray.time() );
     attenuation = m_albedo;
 
     return true;
