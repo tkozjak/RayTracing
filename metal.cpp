@@ -9,10 +9,12 @@ metal::metal(QObject *parent, const vec3 &albedo, qreal fuzz, QRandomGenerator *
     m_albedo = albedo;
 }
 
+
 vec3 metal::reflect(const vec3 &view_vector, const vec3 &normal)
 {
     return view_vector - 2 * dot( view_vector, normal ) * normal;
 }
+
 
 bool metal::scatter(const ray &in_ray, const hit_record &hit_rec, vec3 &attenuation, ray &scattered)
 {

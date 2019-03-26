@@ -1,16 +1,26 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
+#include <QObject>
 #include <QRandomGenerator>
 #include "ray.h"
 
-class camera
+class camera : public QObject
 {
+    Q_OBJECT
 public:
-    camera();
-    camera( qreal vfof, qreal aspect );
-    camera( vec3 look_from, vec3 look_at, vec3 view_up, qreal vfof, qreal aspect, QRandomGenerator *random = nullptr );
-    camera( vec3 look_from, vec3 look_at, vec3 view_up, qreal vfof, qreal aspect, qreal aperture, qreal focal_dist, qreal in_time_1, qreal in_time2, QRandomGenerator *random = nullptr );
+
+    explicit camera( QObject *parent = nullptr,
+            vec3 look_from = vec3( 0.0, 1.0, 1.0 ),
+            vec3 look_at = vec3( 0.0, 1.0, 0.0 ),
+            vec3 view_up = vec3( 0.0, 1.0, 0.0 ),
+            qreal vfof = 70,
+            qreal aspect = 1.0,
+            qreal aperture = 0.0,
+            qreal focal_dist = 1.0,
+            qreal in_time_1 = 0.0,
+            qreal in_time2 = 1.0,
+            QRandomGenerator *random = nullptr );
 
 
     ray get_ray( qreal u, qreal v){
@@ -31,16 +41,24 @@ private:
 
 
     QRandomGenerator *m_random;
+
     qreal m_lens_radius;
+
     vec3 m_lower_left_corner;
+
     vec3 m_horizontal;
     vec3 m_vertical;
     vec3 m_origin;
+
     vec3 m_u;
     vec3 m_v;
     vec3 m_w;
 
     qreal m_time01, m_time02;
+
+signals:
+
+public slots:
 };
 
 #endif // CAMERA_H

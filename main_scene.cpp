@@ -21,7 +21,7 @@ main_scene::main_scene(QObject *parent) : QObject(parent)
     qreal dist_to_focus = ( lookfrom-lookat ).length();
     qreal aperture = 0.0;
 
-    m_camera = new camera( lookfrom, lookat, vec3( 0, 1, 0 ), 20, qreal(nx)/qreal(ny), aperture, dist_to_focus, 0.0, 1.0, m_random  );
+    m_camera = new camera( this, lookfrom, lookat, vec3( 0, 1, 0 ), 20, qreal(nx)/qreal(ny), aperture, dist_to_focus, 0.0, 0.0, m_random  );
 
 }
 
@@ -45,7 +45,7 @@ void main_scene::draw_scene() const
         for(int j = ny-1; j >=0; j--){
             for(int i=0; i<nx; i++){
 
-                qDebug() << "Ray :" << j << ", " << i;
+//                qDebug() << "Ray :" << j << ", " << i;
 
                 vec3 color( 0.0 ,0.0, 0.0 );
                 for( int s=0; s < ns; s++){
@@ -139,7 +139,7 @@ vec3 main_scene::ray_to_color(const ray &in_ray, int bounce) const
         ray scattered_ray;
         vec3 attenuation;
 
-        if( bounce < 20 && hit_rec.p_mat->scatter( in_ray, hit_rec, attenuation, scattered_ray ) ){
+        if( bounce < m_bounces && hit_rec.p_mat->scatter( in_ray, hit_rec, attenuation, scattered_ray ) ){
             return attenuation * ray_to_color( scattered_ray, bounce+1 );
         }
         else{

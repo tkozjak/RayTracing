@@ -11,7 +11,13 @@ class qsphere : public hitable_qentity
 {
     Q_OBJECT
 public:
-    explicit qsphere(  QObject *parent = nullptr, vec3 center_1 = vec3( 0.0, 0.0, 0.0 ), vec3 center_2 = vec3( 0.0, 0.0, 0.0 ), qreal in_t_01 = 0.0, qreal in_t_02 = 0.0, qreal radius = 1.0, material *in_material = nullptr  );
+    explicit qsphere(  QObject *parent = nullptr,
+                       vec3 center_1 = vec3( 0.0, 0.0, 0.0 ),
+                       vec3 center_2 = vec3( 0.0, 0.0, 0.0 ),
+                       qreal in_t_01 = 0.0,
+                       qreal in_t_02 = 0.0,
+                       qreal radius = 1.0,
+                       material *in_material = nullptr  );
 
     virtual bool hit( const ray &in_ray, qreal t_min, qreal t_max, hit_record &record ) const override;
 

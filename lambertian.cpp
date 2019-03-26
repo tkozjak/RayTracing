@@ -1,3 +1,4 @@
+
 #include "lambertian.h"
 
 lambertian::lambertian(QObject *parent, const vec3 &albedo, QRandomGenerator *random) : material(parent)

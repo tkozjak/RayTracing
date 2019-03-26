@@ -14,6 +14,11 @@ int main(int argc, char *argv[])
 
     QRandomGenerator random;
 
+    for( qreal i = -3; i<=3; i++ ){
+        qreal num = ( 5 - 5 ) / i;
+        qDebug() << num;
+    }
+
     qDebug() << "IDEAL CPUs: " << QThread::idealThreadCount();
 
 

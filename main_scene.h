@@ -8,7 +8,6 @@
 #include <QtMath>
 #include <QRandomGenerator>
 
-
 #include "hitable_qentity.h"
 #include "qsphere.h"
 #include "hitable_entity.h"
@@ -34,9 +33,9 @@ public:
     void add_hitble_entity_to_list( hitable_entity *h_entity );
 
 private:
-    int nx = 1200;
-    int ny = 600;
-    int ns = 500;
+    int nx = 400;
+    int ny = 200;
+    int ns = 10;
 
     int m_bounces = 10;
 
