@@ -33,11 +33,11 @@ public:
     void add_hitble_entity_to_list( hitable_entity *h_entity );
 
 private:
-    int nx = 400;
-    int ny = 200;
+    int nx = 1200;
+    int ny = 600;
     int ns = 10;
 
-    int m_bounces = 10;
+    int m_bounces = 2;
 
     qreal m_t_min = 0.001;
     qreal m_t_max = DBL_MAX;
