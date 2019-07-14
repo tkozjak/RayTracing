@@ -38,7 +38,7 @@ Entity{
 
                     ClearBuffers{
                         buffers: ClearBuffers.AllBuffers
-                        clearColor: "azure"
+                        clearColor: "LightSteelBlue"
 
                         CameraSelector{
                             id: camera_selector
@@ -96,8 +96,8 @@ Entity{
     SphereMesh {
         id: sphere_2
         radius: 100
-        rings: 32
-        slices: 32
+        rings: 64
+        slices: 64
     }
 
     SphereMesh {

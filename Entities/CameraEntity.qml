@@ -6,10 +6,33 @@ import QtQuick 2.13 as QQ2
 
 Entity{
 
-    property real vFOV: 50
-    property real aspectRatio: 1
-    property var cameraPostion: Qt.vector3d( 0.0, 1.0, 0.0 )
-    property var cameraLookAt: Qt.vector3d( 0.0, 0.0, 1.0 )
+    property real aspectRatio: 2.0
+    property real vFOV: 20
+    property real hFOV: 40
+    property var cameraPostion: Qt.vector3d( 1, 0.5, 5 )
+    property var cameraLookAt: Qt.vector3d( 0.3, 0, -1 )
+
+    QQ2.Component.onCompleted: {
+        var cameraDirection = cameraLookAt.minus(cameraPostion);
+        var normalizedCamDirection = cameraDirection.normalized();
+        var cameraRightNormalizedVector = normalizedCamDirection.crossProduct( Qt.vector3d(0.0, 1.0, 0.0) );
+        cameraRightNormalizedVector = cameraRightNormalizedVector.normalized();
+
+        var cameraUpNormalizedVector = cameraRightNormalizedVector.crossProduct( normalizedCamDirection );
+        cameraUpNormalizedVector = cameraUpNormalizedVector.normalized();
+
+        console.log( normalizedCamDirection );
+        console.log( cameraRightNormalizedVector );
+        console.log( cameraUpNormalizedVector );
+
+        cameraDirection_n = normalizedCamDirection;
+        cameraRight_n = cameraRightNormalizedVector;
+        cameraUp_n = cameraUpNormalizedVector;
+    }
+
+    property var cameraDirection_n : Qt.vector3d( 1, 0.5, 5 )
+    property var cameraRight_n : Qt.vector3d( 1, 0.5, 5 )
+    property var cameraUp_n : Qt.vector3d( 1, 0.5, 5 )
 
     Buffer{
         id: vertex_buffer
@@ -21,9 +44,9 @@ Entity{
             buffer[1] = 0;
             buffer[2] = 0;
 
-            buffer[3] = 0;
-            buffer[4] = 0;
-            buffer[5] = 2;
+            buffer[3] = cameraDirection_n.x;
+            buffer[4] = cameraDirection_n.y;
+            buffer[5] = cameraDirection_n.z;
 
             return buffer;
         }
@@ -57,50 +80,50 @@ Entity{
     Transform {
         id: transform_1
         translation: Qt.vector3d( 0.0, 0.0, 0.0 )
-        scale3D: Qt.vector3d( 1.0, 1.0, 1.0 )
+        scale3D: Qt.vector3d( 10.0, 10.0, 10.0 )
         rotation: fromAxisAndAngle( Qt.vector3d(0, 1, 0), 0.0 )
     }
 
     Transform {
         id: transform_2
         translation: Qt.vector3d( 0.0, 0.0, 0.0 )
-        scale3D: Qt.vector3d( 1.0, 1.0, 1.0 )
-        rotation: fromAxisAndAngle( Qt.vector3d(0, 1, 0), vFOV/2.0 )
+        scale3D: Qt.vector3d( 10.0, 10.0, 10.0 )
+        rotation: fromAxisAndAngle( cameraUp_n, hFOV/2.0 )
     }
 
     Transform {
         id: transform_3
         translation: Qt.vector3d( 0.0, 0.0, 0.0 )
-        scale3D: Qt.vector3d( 1.0, 1.0, 1.0 )
-        rotation: fromAxisAndAngle( Qt.vector3d(0, 1, 0), -vFOV/2.0 )
+        scale3D: Qt.vector3d( 10.0, 10.0, 10.0 )
+        rotation: fromAxisAndAngle( cameraUp_n, -hFOV/2.0 )
     }
 
     Transform {
         id: transform_4_1
         translation: Qt.vector3d( 0.0, 0.0, 0.0 )
-        scale3D: Qt.vector3d( 1.0, 1.0, 1.0 )
-        rotation: fromAxesAndAngles( Qt.vector3d(1, 0, 0), vFOV/2.0, Qt.vector3d(0, 1, 0), vFOV/2.0 )
+        scale3D: Qt.vector3d( 10.0, 10.0, 10.0 )
+        rotation: fromAxesAndAngles( cameraRight_n, vFOV/2.0, cameraUp_n, hFOV/2.0 )
     }
 
     Transform {
         id: transform_4_2
         translation: Qt.vector3d( 0.0, 0.0, 0.0 )
-        scale3D: Qt.vector3d( 1.0, 1.0, 1.0 )
-        rotation: fromAxesAndAngles( Qt.vector3d(1, 0, 0), -vFOV/2.0, Qt.vector3d(0, 1, 0), vFOV/2.0 )
+        scale3D: Qt.vector3d( 10.0, 10.0, 10.0 )
+        rotation: fromAxesAndAngles( cameraRight_n, -vFOV/2.0, cameraUp_n, hFOV/2.0 )
     }
 
     Transform {
         id: transform_5_1
         translation: Qt.vector3d( 0.0, 0.0, 0.0 )
-        scale3D: Qt.vector3d( 1.0, 1.0, 1.0 )
-        rotation: fromAxesAndAngles( Qt.vector3d(1, 0, 0), vFOV/2.0, Qt.vector3d(0, 1, 0), -vFOV/2.0 )
+        scale3D: Qt.vector3d( 10.0, 10.0, 10.0 )
+        rotation: fromAxesAndAngles( cameraRight_n, vFOV/2.0, cameraUp_n, -hFOV/2.0 )
     }
 
     Transform {
         id: transform_5_2
         translation: Qt.vector3d( 0.0, 0.0, 0.0 )
-        scale3D: Qt.vector3d( 1.0, 1.0, 1.0 )
-        rotation: fromAxesAndAngles( Qt.vector3d(1, 0, 0), -vFOV/2.0, Qt.vector3d(0, 1, 0), -vFOV/2.0 )
+        scale3D: Qt.vector3d( 10.0, 10.0, 10.0 )
+        rotation: fromAxesAndAngles( cameraRight_n, -vFOV/2.0, cameraUp_n, -hFOV/2.0 )
     }
 
 
@@ -138,7 +161,7 @@ Entity{
     Transform {
         id: main_transform
         property real y_anim: 0.0
-        translation: Qt.vector3d( 0.0, y_anim, 0.0 )
+        translation: cameraPostion
         scale3D: Qt.vector3d( 1.0, 1.0, 1.0 )
 //        rotation: fromAxesAndAngles( Qt.vector3d(1, 0, 0), -vFOV/2.0, Qt.vector3d(0, 1, 0), -vFOV/2.0 )
     }
@@ -148,16 +171,22 @@ Entity{
         property: "y_anim"
         duration: 10000
         from: 0
-        to: 3
+        to: 0
 
         loops: QQ2.Animation.Infinite
         running: true
     }
 
+    Entity{
+        components: [geometry_renderer, main_transform, custom_material ]
+    }
+
+
 
     Entity{
         id:composite
-        components: [main_transform]
+
+        components: [main_transform ]
 
             Entity{
                 id: custom_entity_1
