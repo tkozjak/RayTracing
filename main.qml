@@ -1,10 +1,13 @@
 import QtQuick 2.13
 import QtQuick.Window 2.13
-import QtQuick.Controls 2.13
+
+import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.13
 
 import QtQuick.Scene3D 2.13
 import Qt3D.Core 2.13
+
+import "GUI"
 
 Window {
     id: root_window
@@ -21,7 +24,7 @@ Window {
         console.log( "render completed");
 
         rendered_image.source =  "";
-        rendered_image.source = "file:///C:/Users/Show/Documents/Qt/build-RayTracing-Desktop_Qt_5_13_0_MSVC2015_64bit3-Debug/example.ppm"
+        rendered_image.source = "file:///C:/PROJECTS/Qt/build-RayTracing-Desktop_Qt_5_13_0_MSVC2017_64bit-Debug/example.ppm"
         rendered_image.visible = true;
 
         button_timer.start();
@@ -33,58 +36,41 @@ Window {
 
         x:20; y:20
 
-        SpinBox{
-            id: size_x
-            width:300; height:30
-            from:1; to:4096
-            stepSize:100
+        ControlSB{
+            id: size_x_SB
 
-            onValueModified: {
-                _my_scene.setNx(value);
-            }
+            name: "SIZE X"
 
-            Component.onCompleted: {
-                size_x.value = _my_scene.getNx();
-            }
-
+            function setValue(){ _my_scene.setNx( value ); }
+            Component.onCompleted: { getSize( _my_scene.getNx() ); }
         }
 
-        SpinBox{
-            id: size_y
-            width:300; height:30
-            from:1; to:4096
-            stepSize:100
+        ControlSB{
+            id: size_y_SB
 
-            onValueModified: {
-                _my_scene.setNy(value);
-            }
+            name: "SIZE Y"
 
-            Component.onCompleted: {
-                size_y.value = _my_scene.getNy();
-            }
-
+            function setValue(){ _my_scene.setNy( value ); }
+            Component.onCompleted: { getSize( _my_scene.getNy() ); }
         }
 
-        SpinBox{
-            id: num_samples
-            width:300; height:30
-            from:1; to:1000
-            stepSize:5
+        ControlSB{
+            id: num_s_SB
 
-            onValueModified: {
-                _my_scene.setNs(value);
-            }
+            name: "SAMPLES"
+            from: 1
+            to: 100
+            stepSize: 1
 
-            Component.onCompleted: {
-                num_samples.value = _my_scene.getNs();
-            }
+            function setValue(){ _my_scene.setNs( value ); }
+            Component.onCompleted: { getSize( _my_scene.getNs() ); }
         }
 
         Button{
             id: render_button
             text: "RENDER"
             height: 30
-            implicitWidth: num_samples.width
+            implicitWidth: size_x_SB.width
 
             Timer {
                 id: render_timer
@@ -153,8 +139,8 @@ Window {
             id: image_rectangle
             color: "transparent"
             border.color: "red"
-            width: size_x.value
-            height: size_y.value
+            width: size_x_SB.value
+            height: size_y_SB.value
         }
 
         Image{

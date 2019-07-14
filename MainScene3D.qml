@@ -5,6 +5,8 @@ import Qt3D.Extras 2.13
 
 import QtQuick 2.2 as QQ2
 
+import "Entities"
+
 Entity{
     id: root
 
@@ -28,10 +30,22 @@ Entity{
 
     components: [
         RenderSettings{
-            activeFrameGraph: ForwardRenderer{
-                id: forward_renderer
-                clearColor: "azure"
-                camera: perspective_camera
+            activeFrameGraph: RenderSurfaceSelector{
+
+
+
+                Viewport{
+
+                    ClearBuffers{
+                        buffers: ClearBuffers.AllBuffers
+                        clearColor: "azure"
+
+                        CameraSelector{
+                            id: camera_selector
+                            camera: perspective_camera
+                        }
+                    }
+                }
             }
         },
         InputSettings{}
@@ -120,5 +134,7 @@ Entity{
         components: [ sphere_4, material_1, transform_4 ]
     }
 
+    CameraEntity{
 
+    }
 }
