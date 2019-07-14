@@ -13,9 +13,10 @@ main_scene::main_scene(QObject *parent) : QObject(parent)
 
     m_p_hitable_qentities_list.append(SQ1);
     m_p_hitable_qentities_list.append(SQ2);
-//    m_p_hitable_qentities_list.append(SQ3);
-//    m_p_hitable_qentities_list.append(SQ4);
+    m_p_hitable_qentities_list.append(SQ3);
+    m_p_hitable_qentities_list.append(SQ4);
 
+    // default camera
     vec3 lookfrom( 1, 0.5, 5 );
     vec3 lookat( 0.3, 0, -1 );
     qreal dist_to_focus = ( lookfrom-lookat ).length();
@@ -25,7 +26,7 @@ main_scene::main_scene(QObject *parent) : QObject(parent)
 
 }
 
-void main_scene::draw_scene() const
+void main_scene::draw_scene()
 {
     QFile myfile("example.ppm");
     if(myfile.open(QIODevice::WriteOnly | QIODevice::Text))
@@ -72,6 +73,8 @@ void main_scene::draw_scene() const
 
         myfile.close();
         qDebug() << "Writing DEBUG finished";
+
+        emit renderComplete();
     }
 }
 
@@ -123,6 +126,8 @@ void main_scene::draw_debug_scene()
 
         myfile.close();
         qDebug() << "Writing DEBUG finished";
+
+        emit renderComplete();
     }
 
 
@@ -179,4 +184,17 @@ bool main_scene::any_hit(const ray &in_ray, const qreal t_min, const qreal t_max
         }
     }
     return hit_anything;
+}
+
+void main_scene::resetCamera()
+{
+    delete m_camera;
+
+    vec3 lookfrom( 1, 0.5, 5 );
+    vec3 lookat( 0.3, 0, -1 );
+    qreal dist_to_focus = ( lookfrom-lookat ).length();
+    qreal aperture = 0.0;
+
+    m_camera = new camera( this, lookfrom, lookat, vec3( 0, 1, 0 ), 20, qreal(nx)/qreal(ny), aperture, dist_to_focus, 0.0, 0.1, m_random  );
+
 }

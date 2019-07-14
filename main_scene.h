@@ -26,33 +26,47 @@ class main_scene : public QObject
 public:
     explicit main_scene(QObject *parent = nullptr);
 
-    void draw_scene() const;
+    Q_INVOKABLE void draw_scene() ;
     void draw_debug_scene();
 
     void add_hitble_qentity_to_list( hitable_qentity *h_entity );
     void add_hitble_entity_to_list( hitable_entity *h_entity );
 
+    Q_INVOKABLE void setNx( int in_nx ){ nx = in_nx; resetCamera(); }
+    Q_INVOKABLE void setNy( int in_ny ){ ny = in_ny; resetCamera(); }
+    Q_INVOKABLE void setNs( int in_ns ){ ns = in_ns; resetCamera(); }
+
+    Q_INVOKABLE int getNx(){ return nx; }
+    Q_INVOKABLE int getNy(){ return ny; }
+    Q_INVOKABLE int getNs(){ return ns; }
+
 private:
-    int nx = 1200;
-    int ny = 600;
-    int ns = 10;
+    int nx = 300;
+    int ny = 150;
+    int ns = 5;
 
     int m_bounces = 2;
 
     qreal m_t_min = 0.001;
     qreal m_t_max = DBL_MAX;
 
+    // recursive function, bounces until it hits the sky
     vec3 ray_to_color( const ray& in_ray, int bounce ) const;
 
+    // checks if ray has hit any object in the scene
     bool any_hit( const ray &in_ray, const qreal t_min, const qreal t_max, hit_record &record ) const;
 
+    //reset camera based on x,y and s
+    void resetCamera();
+
     camera *m_camera = nullptr;
-    QRandomGenerator *m_random = nullptr;
+    QRandomGenerator *m_random = nullptr; // object that generates any random numbers in this program
 
     QVector< hitable_qentity* > m_p_hitable_qentities_list;
     QVector< hitable_entity* > m_p_hitable_entities_list;
 
 signals:
+    void renderComplete();
 
 public slots:
 };

@@ -2,5 +2,7 @@
     <qresource prefix="/">
         <file>main.qml</file>
         <file>GUI/MyList.qml</file>
+        <file>qt-logo.png</file>
+        <file>MainScene3D.qml</file>
     </qresource>
 </RCC>
