@@ -23,10 +23,13 @@ public:
             QRandomGenerator *random = nullptr );
 
 
-    ray get_ray( qreal u, qreal v){
-        vec3 random_dir = m_lens_radius * random_in_unit_disk();
-        vec3 offset = m_u * random_dir.x() + m_v * random_dir.y();
+    // returns ray based on normalized screen coordiantes
+    ray get_ray( qreal u, qreal v ){
+
+        vec3 random_dir = m_lens_radius * random_in_unit_disk();        
+        vec3 offset = m_u * random_dir.x() + m_v * random_dir.y();        
         qreal time = m_time01 + m_random->bounded(1.0) * ( m_time02 - m_time01 );
+
         return ray( m_origin + offset, m_lower_left_corner + u * m_horizontal + v * m_vertical - m_origin - offset, time );
     }
 
