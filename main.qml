@@ -24,7 +24,8 @@ Window {
         console.log( "render completed");
 
         rendered_image.source =  "";
-        rendered_image.source = "file:///C:/PROJECTS/Qt/build-RayTracing-Desktop_Qt_5_13_0_MSVC2017_64bit-Debug/example.ppm"
+//        rendered_image.source = "file:///C:/PROJECTS/Qt/build-RayTracing-Desktop_Qt_5_13_0_MSVC2017_64bit-Debug/example.ppm"
+        rendered_image.source = "file:///C:/Users/Show/Documents/Qt/build-RayTracing-Desktop_Qt_5_13_0_MSVC2015_64bit3-Debug/example.ppm"
         rendered_image.visible = true;
 
         button_timer.start();
