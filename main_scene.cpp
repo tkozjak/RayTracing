@@ -4,6 +4,7 @@
 main_scene::main_scene(QObject *parent) : QObject(parent)
 {
     m_random = new QRandomGenerator;
+    m_applicationPath = QGuiApplication::applicationDirPath();
 
     // qspheres
     hitable_qentity *SQ1 = new qsphere( this, vec3( 1.5, 0.0, -1.0), vec3( 1.5, 0.0, -1.0), 0.0, 100.0, 0.5, new lambertian( this, vec3(1.0, 0.1, 0.1 ), m_random ));
@@ -28,7 +29,7 @@ main_scene::main_scene(QObject *parent) : QObject(parent)
 
 void main_scene::draw_scene()
 {
-    QFile myfile("example.ppm");
+    QFile myfile(m_applicationPath + "/" + "example.ppm");
     if(myfile.open(QIODevice::WriteOnly | QIODevice::Text))
     {
         qDebug() << "Writing DEBUG started";

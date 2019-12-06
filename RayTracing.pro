@@ -14,6 +14,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
+    scenemodel.cpp \
     vector3d.cpp \
     ray.cpp \
     hitable_entity.cpp \
@@ -43,6 +44,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
+    scenemodel.h \
     vector3d.h \
     ray.h \
     hitable_entity.h \

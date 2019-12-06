@@ -5,6 +5,8 @@
 #include <QDebug>
 #include <QThread>
 
+#include "scenemodel.h"
+
 #include "main_scene.h"
 
 
@@ -26,7 +28,7 @@ int main(int argc, char *argv[])
 
     main_scene my_scene;
 
-
+    qmlRegisterType<SceneModel>( "Scene", 1, 0, "SceneModel");
 
     QQmlApplicationEngine engine;
     engine.rootContext()->setContextProperty( "_my_scene", &my_scene );

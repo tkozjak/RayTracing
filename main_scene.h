@@ -7,6 +7,9 @@
 #include <QFile>
 #include <QtMath>
 #include <QRandomGenerator>
+#include <QGuiApplication>
+
+#include "scenemodel.h"
 
 #include "hitable_qentity.h"
 #include "qsphere.h"
@@ -40,7 +43,11 @@ public:
     Q_INVOKABLE int getNy(){ return ny; }
     Q_INVOKABLE int getNs(){ return ns; }
 
+    Q_INVOKABLE QString getApplicationPath(){ return m_applicationPath; }
+
 private:
+    QString m_applicationPath = "";
+
     int nx = 300;
     int ny = 150;
     int ns = 5;

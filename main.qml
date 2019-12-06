@@ -9,6 +9,8 @@ import Qt3D.Core 2.13
 
 import "GUI"
 
+import Scene 1.0
+
 Window {
     id: root_window
 
@@ -23,9 +25,12 @@ Window {
     function slot_renderCompleted(){
         console.log( "render completed");
 
-        rendered_image.source =  "";
-//        rendered_image.source = "file:///C:/PROJECTS/Qt/build-RayTracing-Desktop_Qt_5_13_0_MSVC2017_64bit-Debug/example.ppm"
-        rendered_image.source = "file:///C:/Users/Show/Documents/Qt/build-RayTracing-Desktop_Qt_5_13_0_MSVC2015_64bit3-Debug/example.ppm"
+        var applicationPath = _my_scene.getApplicationPath();
+
+        console.log( applicationPath );
+
+        rendered_image.source =  "";        
+        rendered_image.source = "file:///" + applicationPath + "/example.ppm";
         rendered_image.visible = true;
 
         button_timer.start();
@@ -126,6 +131,35 @@ Window {
         anchors.fill: scene_3d_frame
         color: "transparent"
         border.color: "red"
+    }
+
+    Frame{
+        id: list_frame
+
+        anchors.top : controls_columns.bottom
+        anchors.topMargin: 10
+        anchors.left : controls_columns.left
+
+        implicitWidth: controls_columns.width
+
+        ListView{
+            id: list_view
+
+            implicitWidth: parent.width
+            implicitHeight: 250
+
+            clip: true
+
+            model: SceneModel{}
+
+            delegate: RowLayout{
+                width: parent.width
+
+                Text{
+                    text: model.entityname
+                }
+            }
+        }
     }
 
     Window{
