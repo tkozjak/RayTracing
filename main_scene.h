@@ -45,6 +45,10 @@ public:
 
     Q_INVOKABLE QString getApplicationPath(){ return m_applicationPath; }
 
+    bool setEntityAt(int index, hitable_qentity *entity);
+
+    QVector<hitable_qentity*> entities() const;
+
 private:
     QString m_applicationPath = "";
 
@@ -69,13 +73,24 @@ private:
     camera *m_camera = nullptr;
     QRandomGenerator *m_random = nullptr; // object that generates any random numbers in this program
 
+    // our main container for entitites
     QVector< hitable_qentity* > m_p_hitable_qentities_list;
+
     QVector< hitable_entity* > m_p_hitable_entities_list;
 
 signals:
     void renderComplete();
 
+    // add/remove entity to scene
+    void preEntityAppended();
+    void postEntityAppended();
+
+    void preEntityRemoved( int index );
+    void postEntityRemoved();
+
 public slots:
+    void appendEntity();
+    void removeEntityAt( int index );
 };
 
 #endif // MAIN_SCENE_H

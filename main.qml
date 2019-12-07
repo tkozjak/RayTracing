@@ -156,7 +156,11 @@ Window {
                 width: parent.width
 
                 Text{
-                    text: model.entityname
+                    text: model.name
+                }
+
+                Text{
+                    text: model.type
                 }
             }
         }

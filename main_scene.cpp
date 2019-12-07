@@ -62,7 +62,7 @@ void main_scene::draw_scene()
                 color = color / qreal(ns);
 
                 // gamma 2.0
-//                color = vec3(qSqrt(color[0]), qSqrt(color[1]), qSqrt(color[2]));
+                //                color = vec3(qSqrt(color[0]), qSqrt(color[1]), qSqrt(color[2]));
 
                 int ir = int(255.99*color[0]);
                 int ig = int(255.99*color[1]);
@@ -115,7 +115,7 @@ void main_scene::draw_debug_scene()
                 color = color / qreal(ns);
 
                 // gamma 2.0
-//                color = vec3(qSqrt(color[0]), qSqrt(color[1]), qSqrt(color[2]));
+                //                color = vec3(qSqrt(color[0]), qSqrt(color[1]), qSqrt(color[2]));
 
                 int ir = int(255.99*color[0]);
                 int ig = int(255.99*color[1]);
@@ -134,10 +134,27 @@ void main_scene::draw_debug_scene()
 
 }
 
+bool main_scene::setEntityAt(int index, hitable_qentity *entity)
+{
+    if(index < 0 || index >= m_p_hitable_qentities_list.size() )
+        return false;
+
+    // check if everything is same
+    const hitable_qentity* old_entity = m_p_hitable_qentities_list.at(index);
+    //if(entity.)
+    m_p_hitable_qentities_list[index] = entity;
+    return true;
+}
+
+QVector<hitable_qentity*> main_scene::entities() const
+{
+    return m_p_hitable_qentities_list;
+}
+
 // main function that returns color of hit point
 vec3 main_scene::ray_to_color(const ray &in_ray, int bounce) const
 {
-//    return vec3( 1.0, 0.0, 0.0 );
+    //    return vec3( 1.0, 0.0, 0.0 );
     hit_record hit_rec;
 
     if( any_hit( in_ray, m_t_min, m_t_max, hit_rec ) ){
@@ -162,9 +179,9 @@ vec3 main_scene::ray_to_color(const ray &in_ray, int bounce) const
         }
         return(( 1.0 - t ) * vec3( 1.0, 1.0, 1.0 ) + t * vec3( 0.5, 0.7, 1.0 )) * (factor+0.35);
 
-//        vec3 unit_direction = unit_vector( in_ray.direction() );
-//        qreal t = 0.5 * (unit_direction.y() + 1.0 );
-//        return ( 1.0 - t ) * vec3( 1.0, 1.0, 1.0 ) + t * vec3( 0.5, 0.7, 1.0 );
+        //        vec3 unit_direction = unit_vector( in_ray.direction() );
+        //        qreal t = 0.5 * (unit_direction.y() + 1.0 );
+        //        return ( 1.0 - t ) * vec3( 1.0, 1.0, 1.0 ) + t * vec3( 0.5, 0.7, 1.0 );
     }
 }
 
@@ -198,4 +215,14 @@ void main_scene::resetCamera()
 
     m_camera = new camera( this, lookfrom, lookat, vec3( 0, 1, 0 ), 20, qreal(nx)/qreal(ny), aperture, dist_to_focus, 0.0, 100.0, m_random  );
 
+}
+
+void main_scene::appendEntity()
+{
+    emit preEntityAppended();
+
+    hitable_qentity *defaultEntity = new qsphere( this, vec3( 1.5, 0.0, -1.0), vec3( 1.5, 0.0, -1.0), 0.0, 100.0, 0.5, new lambertian( this, vec3(1.0, 0.1, 0.1 ), m_random ));
+    m_p_hitable_qentities_list.append(defaultEntity);
+
+    emit postEntityAppended();
 }

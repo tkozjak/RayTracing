@@ -3,6 +3,19 @@
 SceneModel::SceneModel(QObject *parent)
     : QAbstractListModel(parent)
 {
+    qDebug() << "Roles";
+    qDebug() << "Entity name role: " << EntityNameRole;
+    qDebug() << "Entity type role: " << EntityTypeRole;
+
+}
+
+
+QHash<int, QByteArray> SceneModel::roleNames() const
+{
+    QHash<int, QByteArray> roles;
+    roles[EntityNameRole] = "name";
+    roles[EntityTypeRole] = "type";
+    return roles;
 }
 
 int SceneModel::rowCount(const QModelIndex &parent) const
@@ -16,6 +29,7 @@ int SceneModel::rowCount(const QModelIndex &parent) const
     return 10;
 }
 
+
 QVariant SceneModel::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid())
@@ -23,8 +37,10 @@ QVariant SceneModel::data(const QModelIndex &index, int role) const
 
     // FIXME: Implement me!
     switch(role){
-    case EntityName:
-        return QVariant("Default Text");
+    case EntityNameRole:
+        return QVariant("Default Name");
+    case EntityTypeRole:
+        return QVariant("Default Type");
     }
 
     return QVariant();
