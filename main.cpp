@@ -26,9 +26,11 @@ int main(int argc, char *argv[])
     qDebug() << "IDEAL CPUs: " << QThread::idealThreadCount();
 
 
-    main_scene my_scene;
-
     qmlRegisterType<SceneModel>( "Scene", 1, 0, "SceneModel");
+    qmlRegisterUncreatableType<main_scene>( "Scene", 1, 0, "MainScene",
+                                            QStringLiteral("sss"));
+
+    main_scene my_scene;
 
     QQmlApplicationEngine engine;
     engine.rootContext()->setContextProperty( "_my_scene", &my_scene );

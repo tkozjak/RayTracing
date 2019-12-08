@@ -45,12 +45,17 @@ public:
 
     Q_INVOKABLE QString getApplicationPath(){ return m_applicationPath; }
 
+    // FUNCTIONS FOR DATA MODEL
     bool setEntityAt(int index, hitable_qentity *entity);
-
     QVector<hitable_qentity*> entities() const;
+
+    QString tempReturnType(){ return "TEST TYPE"; }
+    int tempReturnSize(){ return m_bounces; }
 
 private:
     QString m_applicationPath = "";
+
+//    SceneModel *m_scene_model = nullptr;
 
     int nx = 300;
     int ny = 150;
@@ -81,7 +86,7 @@ private:
 signals:
     void renderComplete();
 
-    // add/remove entity to scene
+    // signals to model
     void preEntityAppended();
     void postEntityAppended();
 
@@ -89,6 +94,7 @@ signals:
     void postEntityRemoved();
 
 public slots:
+    // slots
     void appendEntity();
     void removeEntityAt( int index );
 };

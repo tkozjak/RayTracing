@@ -29,7 +29,7 @@ Window {
 
         console.log( applicationPath );
 
-        rendered_image.source =  "";        
+        rendered_image.source =  "";
         rendered_image.source = "file:///" + applicationPath + "/example.ppm";
         rendered_image.visible = true;
 
@@ -133,38 +133,52 @@ Window {
         border.color: "red"
     }
 
-    Frame{
-        id: list_frame
-
+    ColumnLayout{
         anchors.top : controls_columns.bottom
         anchors.topMargin: 10
         anchors.left : controls_columns.left
 
-        implicitWidth: controls_columns.width
+        Frame{
+            id: list_frame
+            implicitWidth: controls_columns.width
 
-        ListView{
-            id: list_view
+            ListView{
+                id: list_view
 
-            implicitWidth: parent.width
-            implicitHeight: 250
+                implicitWidth: parent.width
+                implicitHeight: 250
 
-            clip: true
+                clip: true
 
-            model: SceneModel{}
-
-            delegate: RowLayout{
-                width: parent.width
-
-                Text{
-                    text: model.name
+                model: SceneModel{
+                    scene: _my_scene
                 }
 
-                Text{
-                    text: model.type
+                delegate: RowLayout{
+                    width: parent.width
+
+                    Text{
+                        text: model.name
+                    }
+
+                    Text{
+                        text: model.type
+                    }
+
+
+                    Text{
+                        text: model.position.x + "; " + model.position.y + "; " + model.position.z
+                    }
                 }
             }
         }
+
+        Button{
+            text: qsTr("append")
+            onClicked: _my_scene.appendEntity();
+        }
     }
+
 
     Window{
         id: render_window

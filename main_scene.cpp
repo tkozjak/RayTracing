@@ -3,8 +3,11 @@
 
 main_scene::main_scene(QObject *parent) : QObject(parent)
 {
+//    m_scene_model = new SceneModel(this);
+//    m_scene_model->setScene(this);
+
     m_random = new QRandomGenerator;
-    m_applicationPath = QGuiApplication::applicationDirPath();
+    m_applicationPath = QGuiApplication::applicationDirPath();    
 
     // qspheres
     hitable_qentity *SQ1 = new qsphere( this, vec3( 1.5, 0.0, -1.0), vec3( 1.5, 0.0, -1.0), 0.0, 100.0, 0.5, new lambertian( this, vec3(1.0, 0.1, 0.1 ), m_random ));
@@ -24,6 +27,8 @@ main_scene::main_scene(QObject *parent) : QObject(parent)
     qreal aperture = 0.0;
 
     m_camera = new camera( this, lookfrom, lookat, vec3( 0, 1, 0 ), 20, qreal(nx)/qreal(ny), aperture, dist_to_focus, 0.0, 100.0, m_random  );
+
+
 
 }
 
@@ -139,10 +144,9 @@ bool main_scene::setEntityAt(int index, hitable_qentity *entity)
     if(index < 0 || index >= m_p_hitable_qentities_list.size() )
         return false;
 
-    // check if everything is same
-    const hitable_qentity* old_entity = m_p_hitable_qentities_list.at(index);
-    //if(entity.)
+    // replace entity (TO DO: HANDLE THIS BETTER)
     m_p_hitable_qentities_list[index] = entity;
+
     return true;
 }
 
@@ -219,10 +223,25 @@ void main_scene::resetCamera()
 
 void main_scene::appendEntity()
 {
-    emit preEntityAppended();
+    // emit signal to model that we are about to append our list
 
+
+    // create default sphere
     hitable_qentity *defaultEntity = new qsphere( this, vec3( 1.5, 0.0, -1.0), vec3( 1.5, 0.0, -1.0), 0.0, 100.0, 0.5, new lambertian( this, vec3(1.0, 0.1, 0.1 ), m_random ));
     m_p_hitable_qentities_list.append(defaultEntity);
+emit preEntityAppended();
 
+    // emit signal to model that appended our list
     emit postEntityAppended();
+
+
+}
+
+void main_scene::removeEntityAt(int index)
+{
+    if(index >= 0 || index >= m_p_hitable_qentities_list.size() ){
+        emit preEntityRemoved(index);
+        m_p_hitable_qentities_list.removeAt(index);
+        emit postEntityRemoved();
+    }
 }
