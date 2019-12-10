@@ -49,9 +49,6 @@ public:
     bool setEntityAt(int index, hitable_qentity *entity);
     QVector<hitable_qentity*> entities() const;
 
-    QString tempReturnType(){ return "TEST TYPE"; }
-    int tempReturnSize(){ return m_bounces; }
-
 private:
     QString m_applicationPath = "";
 
@@ -95,8 +92,8 @@ signals:
 
 public slots:
     // slots
-    void appendEntity();
-    void removeEntityAt( int index );
+    Q_INVOKABLE void appendEntity();
+    Q_INVOKABLE void removeEntityAt( int index );
 };
 
 #endif // MAIN_SCENE_H

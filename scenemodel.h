@@ -19,10 +19,10 @@ public:
     explicit SceneModel(QObject *parent = nullptr);
 
     // custom data roles
-    enum {
-        EntityNameRole = Qt::UserRole,
-        EntityTypeRole = Qt::UserRole+1,
-        SpherePositionRole = Qt::UserRole+2
+    enum dataItem_roles {
+        EntityNameRole = Qt::UserRole+1,
+        EntityTypeRole,
+        SpherePositionRole
     };
 
     // hash that maps role/enum to role name in qml
@@ -36,7 +36,7 @@ public:
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
 
-    // this function adds/modifies data
+    // this function adds/modifies data    
     bool setData(const QModelIndex &index, const QVariant &value,
                  int role = Qt::EditRole) override;
 

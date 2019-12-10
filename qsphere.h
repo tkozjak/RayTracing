@@ -22,7 +22,7 @@ public:
 
     virtual bool hit( const ray &in_ray, qreal t_min, qreal t_max, hit_record &record ) const override;
 
-    QVector3D getPosition(){
+    QVector3D getPosition() const {
         return QVector3D( m_center_01.e[0], m_center_01.e[1], m_center_01.e[2] );
     }
 

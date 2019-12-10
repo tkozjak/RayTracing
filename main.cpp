@@ -6,7 +6,6 @@
 #include <QThread>
 
 #include "scenemodel.h"
-
 #include "main_scene.h"
 
 
@@ -27,8 +26,7 @@ int main(int argc, char *argv[])
 
 
     qmlRegisterType<SceneModel>( "Scene", 1, 0, "SceneModel");
-    qmlRegisterUncreatableType<main_scene>( "Scene", 1, 0, "MainScene",
-                                            QStringLiteral("sss"));
+    qmlRegisterUncreatableType<main_scene>( "Scene", 1, 0, "MainScene", QStringLiteral("sss"));
 
     main_scene my_scene;
 

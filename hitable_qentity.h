@@ -24,8 +24,10 @@ public:
 
     virtual bool hit( const ray &in_ray, qreal t_min, qreal t_max, hit_record &record ) const = 0;
 
-    QString getEntityName(){ return m_entityName; }
-    entity_type getEntityType(){ return m_entity_type; }
+    QString getEntityName() const { return m_entityName; }
+    void setEntityName( QString in_name ){ m_entityName = in_name; }
+    entity_type getEntityType() const { return m_entity_type; }
+    void setEntityType( entity_type in_type ){ m_entity_type = in_type; }
 
 private:
     QString m_entityName = "default_name";

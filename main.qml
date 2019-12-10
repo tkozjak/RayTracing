@@ -151,7 +151,12 @@ Window {
                 clip: true
 
                 model: SceneModel{
+                    id: scene_model
                     scene: _my_scene
+
+                    onRowsInserted: {
+                        console.log("Row inserted!")
+                    }
                 }
 
                 delegate: RowLayout{
@@ -165,11 +170,12 @@ Window {
                         text: model.type
                     }
 
-
                     Text{
                         text: model.position.x + "; " + model.position.y + "; " + model.position.z
                     }
                 }
+
+
             }
         }
 

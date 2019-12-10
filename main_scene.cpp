@@ -145,6 +145,12 @@ bool main_scene::setEntityAt(int index, hitable_qentity *entity)
         return false;
 
     // replace entity (TO DO: HANDLE THIS BETTER)
+
+    const hitable_qentity *current_entity = m_p_hitable_qentities_list.at(index);
+
+    if( entity->getEntityName() == current_entity->getEntityName() && entity->getEntityType() == current_entity->getEntityType() )
+        return false;
+
     m_p_hitable_qentities_list[index] = entity;
 
     return true;
@@ -224,16 +230,19 @@ void main_scene::resetCamera()
 void main_scene::appendEntity()
 {
     // emit signal to model that we are about to append our list
+    // pre
+    emit preEntityAppended();
 
+    // model calls data() somewhere here - it fills model with data items for view to display
 
     // create default sphere
-    hitable_qentity *defaultEntity = new qsphere( this, vec3( 1.5, 0.0, -1.0), vec3( 1.5, 0.0, -1.0), 0.0, 100.0, 0.5, new lambertian( this, vec3(1.0, 0.1, 0.1 ), m_random ));
+    vec3 pos_vec(5 - m_random->bounded(10.0), 0.0, 5 - m_random->bounded(10.0));
+    hitable_qentity *defaultEntity = new qsphere( this, /*vec3( 1.5, 0.0, -1.0)*/pos_vec, /*vec3( 1.5, 0.0, -1.0)*/pos_vec, 0.0, 100.0, 0.5, new lambertian( this, vec3(1.0, 0.1, 0.1 ), m_random ));
     m_p_hitable_qentities_list.append(defaultEntity);
-emit preEntityAppended();
+
 
     // emit signal to model that appended our list
     emit postEntityAppended();
-
 
 }
 
