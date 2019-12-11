@@ -11,7 +11,7 @@ SceneModel::SceneModel(QObject *parent)
 
 QHash<int, QByteArray> SceneModel::roleNames() const
 {
-    qDebug() <<"Role names called!";
+//    qDebug() <<"Role names called!";
 
     QHash<int, QByteArray> roles;
 
@@ -29,7 +29,7 @@ int SceneModel::rowCount(const QModelIndex &parent) const
     if ( parent.isValid() || !m_scene )
         return 0;
 
-    qDebug() <<"Row count function called :" << m_scene->entities().size();
+//    qDebug() <<"Row count function called :" << m_scene->entities().size();
     return m_scene->entities().size();
 
 }
@@ -37,7 +37,7 @@ int SceneModel::rowCount(const QModelIndex &parent) const
 
 QVariant SceneModel::data(const QModelIndex &index, int role) const
 {
-    qDebug() << "Data called!";
+//    qDebug() << "Data called!";
 
     if (!index.isValid() || !m_scene )
         return QVariant();
@@ -61,7 +61,7 @@ QVariant SceneModel::data(const QModelIndex &index, int role) const
 
 bool SceneModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
-    qDebug() << "Set data called!";
+//    qDebug() << "Set data called!";
 
     if(!m_scene)
         return false;
@@ -92,7 +92,7 @@ bool SceneModel::setData(const QModelIndex &index, const QVariant &value, int ro
 
 Qt::ItemFlags SceneModel::flags(const QModelIndex &index) const
 {
-    qDebug() << "Flags called!";
+//    qDebug() << "Flags called!";
 
     if (!index.isValid())
         return Qt::NoItemFlags;
@@ -123,7 +123,7 @@ void SceneModel::setScene(main_scene *scene)
         connect(m_scene, &main_scene::preEntityAppended, this, [=]() {
             const int index = m_scene->entities().size();
 
-            qDebug() << "Pre-append row count :" << index;
+//            qDebug() << "Pre-append row count :" << index;
             beginInsertRows(QModelIndex(), index, index);
 
         } );
@@ -132,7 +132,7 @@ void SceneModel::setScene(main_scene *scene)
             endInsertRows();
 
             const int index = m_scene->entities().size();
-            qDebug() << "Post-append row count :" << index;
+//            qDebug() << "Post-append row count :" << index;
 
         } );
 

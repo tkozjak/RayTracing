@@ -29,7 +29,7 @@ public:
     entity_type getEntityType() const { return m_entity_type; }
     void setEntityType( entity_type in_type ){ m_entity_type = in_type; }
 
-private:
+protected:
     QString m_entityName = "default_name";
     entity_type m_entity_type = SphereEntity;
 

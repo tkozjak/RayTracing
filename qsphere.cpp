@@ -1,8 +1,10 @@
 #include "qsphere.h"
 
 
-qsphere::qsphere(QObject *parent, vec3 center_1, vec3 center_2, qreal in_t_01, qreal in_t_02, qreal radius, material *in_material) : hitable_qentity(parent)
+qsphere::qsphere( QString name, QObject *parent, vec3 center_1, vec3 center_2, qreal in_t_01, qreal in_t_02, qreal radius, material *in_material) : hitable_qentity(parent)
 {
+    m_entityName = name;
+
     m_time_01 = in_t_01;
     m_time_02 = in_t_02;
 

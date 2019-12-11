@@ -10,6 +10,12 @@ import "Entities"
 Entity{
     id: root
 
+    //default sphere properties
+    property alias s_1_pos : transform_1.translation
+    property alias s_2_pos : transform_2.translation
+    property alias s_3_pos : transform_3.translation
+    property alias s_4_pos : transform_4.translation
+
     Camera{
         id: perspective_camera
         projectionType: CameraLens.PerspectiveProjection
@@ -64,25 +70,25 @@ Entity{
 
     Transform {
         id: transform_1
-        translation: Qt.vector3d(1.5, 0.0, -1.0)
+        translation: Qt.vector3d(1.5, -1000.0, -1.0)
         rotation: fromAxisAndAngle(Qt.vector3d(1, 0, 0), 0)
     }
 
     Transform {
         id: transform_2
-        translation: Qt.vector3d(0.0, -100.5, -1.0)
+        translation: Qt.vector3d(0.0, -1000.5, -1.0)
         rotation: fromAxisAndAngle(Qt.vector3d(1, 0, 0), 0)
     }
 
     Transform {
         id: transform_3
-        translation: Qt.vector3d(1.1, 0.0, -1.0)
+        translation: Qt.vector3d(1.1, -1000.0, -1.0)
         rotation: fromAxisAndAngle(Qt.vector3d(1, 0, 0), 0)
     }
 
     Transform {
         id: transform_4
-        translation: Qt.vector3d(-0.95, -0.1, -1.2)
+        translation: Qt.vector3d(-0.95, -1000.0, -1.2)
         rotation: fromAxisAndAngle(Qt.vector3d(1, 0, 0), 0)
     }
 

@@ -12,7 +12,8 @@ class qsphere : public hitable_qentity
 {
     Q_OBJECT
 public:
-    explicit qsphere(  QObject *parent = nullptr,
+    explicit qsphere(  QString name = "default name",
+                       QObject *parent = nullptr,
                        vec3 center_1 = vec3( 0.0, 0.0, 0.0 ),
                        vec3 center_2 = vec3( 0.0, 0.0, 0.0 ),
                        qreal in_t_01 = 0.0,

@@ -133,6 +133,7 @@ Window {
         border.color: "red"
     }
 
+    // LIST
     ColumnLayout{
         anchors.top : controls_columns.bottom
         anchors.topMargin: 10
@@ -156,6 +157,11 @@ Window {
 
                     onRowsInserted: {
                         console.log("Row inserted!")
+                        console.log(scene_model.rowCount());
+                    }
+
+                    onModelReset: {
+                        console.log("model reset")
                     }
                 }
 
@@ -175,7 +181,15 @@ Window {
                     }
                 }
 
-
+                Component.onCompleted: {
+                    for( var i=0; i<list_view.model.rowCount(); i++){
+//                        var pos_vector = Qt.vector3d(0.0, 0.0, 0.0);
+//                        console.log( scene_model.data() )
+//                        //                            pos_vector.y = list_view.model.position.y;
+//                        //                            pos_vector.z = list_view.model.position.z;
+////                        console.log( pos_vector );
+                    }
+                }
             }
         }
 

@@ -25,6 +25,11 @@ public:
         SpherePositionRole
     };
 
+//    Q_INVOKABLE QString testFunction( int row ){
+//        QModelIndex index;
+//        index.
+//    }
+
     // hash that maps role/enum to role name in qml
     virtual QHash<int, QByteArray> roleNames() const override;
 

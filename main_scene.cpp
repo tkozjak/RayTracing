@@ -10,10 +10,10 @@ main_scene::main_scene(QObject *parent) : QObject(parent)
     m_applicationPath = QGuiApplication::applicationDirPath();    
 
     // qspheres
-    hitable_qentity *SQ1 = new qsphere( this, vec3( 1.5, 0.0, -1.0), vec3( 1.5, 0.0, -1.0), 0.0, 100.0, 0.5, new lambertian( this, vec3(1.0, 0.1, 0.1 ), m_random ));
-    hitable_qentity *SQ2 = new qsphere( this, vec3( 0.0, -100.5, -1.0), vec3( 0.0, -100.5, -1.0), 0.0, 100.0, 100.0,  new lambertian( this, vec3(1.0, 1.0, 1.0 ), m_random ));
-    hitable_qentity *SQ3 = new qsphere( this, vec3( 1.1, 0.0, -1.0), vec3( -1.1, 0.0, -1.0), 0.0, 100.0, 0.5,  new metal( this, vec3(0.2, 0.9, 0.1 ), 0.3, m_random ));
-    hitable_qentity *SQ4 = new qsphere( this, vec3( -0.95, -0.1, -1.2), vec3( -0.95, -0.1, -1.2), 0.0, 100.0, 0.3,  new dieletric( this, 1.4, m_random ));
+    hitable_qentity *SQ1 = new qsphere( "crvena", this, vec3( 1.5, 0.0, -1.0), vec3( 1.5, 0.0, -1.0), 0.0, 100.0, 0.5, new lambertian( this, vec3(1.0, 0.1, 0.1 ), m_random ));
+    hitable_qentity *SQ2 = new qsphere( "podloga", this, vec3( 0.0, -100.5, -1.0), vec3( 0.0, -100.5, -1.0), 0.0, 100.0, 100.0,  new lambertian( this, vec3(1.0, 1.0, 1.0 ), m_random ));
+    hitable_qentity *SQ3 = new qsphere( "brza", this, vec3( 1.1, 0.0, -1.0), vec3( -1.1, 0.0, -1.0), 0.0, 100.0, 0.5,  new metal( this, vec3(0.2, 0.9, 0.1 ), 0.3, m_random ));
+    hitable_qentity *SQ4 = new qsphere( "prozirna", this, vec3( -0.95, -0.1, -1.2), vec3( -0.95, -0.1, -1.2), 0.0, 100.0, 0.3,  new dieletric( this, 1.4, m_random ));
 
     m_p_hitable_qentities_list.append(SQ1);
     m_p_hitable_qentities_list.append(SQ2);
@@ -21,7 +21,7 @@ main_scene::main_scene(QObject *parent) : QObject(parent)
     m_p_hitable_qentities_list.append(SQ4);
 
     // default camera
-    vec3 lookfrom( 1, 0.5, 5 );
+    vec3 lookfrom( 1, 15.5, 5 );
     vec3 lookat( 0.3, 0, -1 );
     qreal dist_to_focus = ( lookfrom-lookat ).length();
     qreal aperture = 0.0;
@@ -236,8 +236,9 @@ void main_scene::appendEntity()
     // model calls data() somewhere here - it fills model with data items for view to display
 
     // create default sphere
-    vec3 pos_vec(5 - m_random->bounded(10.0), 0.0, 5 - m_random->bounded(10.0));
-    hitable_qentity *defaultEntity = new qsphere( this, /*vec3( 1.5, 0.0, -1.0)*/pos_vec, /*vec3( 1.5, 0.0, -1.0)*/pos_vec, 0.0, 100.0, 0.5, new lambertian( this, vec3(1.0, 0.1, 0.1 ), m_random ));
+    vec3 pos_vec(5 - m_random->bounded(10.0), 1 - m_random->bounded(2.0), 5 - m_random->bounded(10.0));
+    qreal rad = 0.1 + m_random->bounded(2.0);
+    hitable_qentity *defaultEntity = new qsphere( "default", this, /*vec3( 1.5, 0.0, -1.0)*/pos_vec, /*vec3( 1.5, 0.0, -1.0)*/pos_vec, 0.0, 100.0, rad, new lambertian( this, vec3(1.0, 0.1, 0.1 ), m_random ));
     m_p_hitable_qentities_list.append(defaultEntity);
 
 
