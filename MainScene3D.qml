@@ -10,11 +10,19 @@ import "Entities"
 Entity{
     id: root
 
+    property alias cam_pos : perspective_camera.position
+    property alias cam_lookAt : perspective_camera.viewCenter
+
     //default sphere properties
     property alias s_1_pos : transform_1.translation
     property alias s_2_pos : transform_2.translation
     property alias s_3_pos : transform_3.translation
     property alias s_4_pos : transform_4.translation
+
+    property alias s_1_m : sphere_1.radius
+    property alias s_2_m : sphere_2.radius
+    property alias s_3_m : sphere_3.radius
+    property alias s_4_m : sphere_4.radius
 
     Camera{
         id: perspective_camera
@@ -26,6 +34,10 @@ Entity{
         position: Qt.vector3d( 1.0, 0.5, 5.0 )
         upVector: Qt.vector3d( 0.0, 1.0, 0.0 )
         viewCenter: Qt.vector3d( 0.3, 0.0, -1.0 )
+
+        onPositionChanged: {
+
+        }
 
 
     }

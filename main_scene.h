@@ -35,9 +35,9 @@ public:
     void add_hitble_qentity_to_list( hitable_qentity *h_entity );
     void add_hitble_entity_to_list( hitable_entity *h_entity );
 
-    Q_INVOKABLE void setNx( int in_nx ){ nx = in_nx; resetCamera(); }
-    Q_INVOKABLE void setNy( int in_ny ){ ny = in_ny; resetCamera(); }
-    Q_INVOKABLE void setNs( int in_ns ){ ns = in_ns; resetCamera(); }
+    Q_INVOKABLE void setNx( int in_nx, QVector3D in_pos, QVector3D in_lookAt ){ nx = in_nx; resetCamera( vec3(in_pos.x(), in_pos.y(), in_pos.x()), vec3( in_lookAt.x(), in_lookAt.y(), in_lookAt.z()) ); }
+    Q_INVOKABLE void setNy( int in_ny, QVector3D in_pos, QVector3D in_lookAt ){ ny = in_ny; resetCamera( vec3(in_pos.x(), in_pos.y(), in_pos.x()), vec3( in_lookAt.x(), in_lookAt.y(), in_lookAt.z()) ); }
+    Q_INVOKABLE void setNs( int in_ns, QVector3D in_pos, QVector3D in_lookAt ){ ns = in_ns; resetCamera( vec3(in_pos.x(), in_pos.y(), in_pos.x()), vec3( in_lookAt.x(), in_lookAt.y(), in_lookAt.z()) ); }
 
     Q_INVOKABLE int getNx(){ return nx; }
     Q_INVOKABLE int getNy(){ return ny; }
@@ -48,6 +48,8 @@ public:
     // FUNCTIONS FOR DATA MODEL
     bool setEntityAt(int index, hitable_qentity *entity);
     QVector<hitable_qentity*> entities() const;
+
+//    Q_INVOKABLE void resetCameraPosLookAt( vec3 in_position, vec3 look_at );
 
 private:
     QString m_applicationPath = "";
@@ -70,7 +72,7 @@ private:
     bool any_hit( const ray &in_ray, const qreal t_min, const qreal t_max, hit_record &record ) const;
 
     //reset camera based on x,y and s
-    void resetCamera();
+    void resetCamera( vec3 in_position, vec3 in_lookAt );
 
     camera *m_camera = nullptr;
     QRandomGenerator *m_random = nullptr; // object that generates any random numbers in this program

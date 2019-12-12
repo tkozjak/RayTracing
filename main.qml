@@ -47,7 +47,14 @@ Window {
 
             name: "SIZE X"
 
-            function setValue(){ _my_scene.setNx( value ); }
+
+            function setValue(){
+
+                var posVec = scene_3d.cam_pos
+                var lookAtVec = scene_3d.cam_lookAt
+
+                _my_scene.setNx( value, posVec, lookAtVec );
+            }
             Component.onCompleted: { getSize( _my_scene.getNx() ); }
         }
 
@@ -56,7 +63,13 @@ Window {
 
             name: "SIZE Y"
 
-            function setValue(){ _my_scene.setNy( value ); }
+            function setValue(){
+
+                var posVec = scene_3d.cam_pos
+                var lookAtVec = scene_3d.cam_lookAt
+
+                _my_scene.setNy( value, posVec, lookAtVec );
+            }
             Component.onCompleted: { getSize( _my_scene.getNy() ); }
         }
 
@@ -68,7 +81,13 @@ Window {
             to: 100
             stepSize: 1
 
-            function setValue(){ _my_scene.setNs( value ); }
+            function setValue(){
+
+                var posVec = scene_3d.cam_pos
+                var lookAtVec = scene_3d.cam_lookAt
+
+                _my_scene.setNs( value, posVec, lookAtVec );
+            }
             Component.onCompleted: { getSize( _my_scene.getNs() ); }
         }
 
@@ -157,7 +176,7 @@ Window {
 
                     onRowsInserted: {
                         console.log("Row inserted!")
-                        console.log(scene_model.rowCount());
+//                        console.log(scene_model.rowCount());
                     }
 
                     onModelReset: {
@@ -176,18 +195,59 @@ Window {
                         text: model.type
                     }
 
-                    Text{
-                        text: model.position.x + "; " + model.position.y + "; " + model.position.z
+                    TextField{
+                        text: model.radius
+                        onEditingFinished: {
+                            switch(index+1){
+                            case 1:
+                                scene_3d.s_1_m = text;
+                                break;
+                            case 2:
+                                scene_3d.s_2_m = text;
+                                break;
+                            case 3:
+                                scene_3d.s_3_m = text;
+                                break;
+                            case 4:
+                                scene_3d.s_4_m = text;
+                                break;
+                            }
+                            console.log( "index: " + index );
+                            model.radius = text;
+                        }
                     }
+
+//                    Text{
+//                        text: model.position.x + "; " + model.position.y + "; " + model.position.z
+//                    }
                 }
 
+                // TEMP: setup our 3D scene by going through items in our model
                 Component.onCompleted: {
-                    for( var i=0; i<list_view.model.rowCount(); i++){
-//                        var pos_vector = Qt.vector3d(0.0, 0.0, 0.0);
-//                        console.log( scene_model.data() )
-//                        //                            pos_vector.y = list_view.model.position.y;
-//                        //                            pos_vector.z = list_view.model.position.z;
-////                        console.log( pos_vector );
+                    for( var i=1; i<list_view.model.rowCount()+1; i++){
+
+                        var name_role = 257;
+                        var type_role = 258;
+                        var position_role = 259;
+
+                        var pos_vector = Qt.vector3d(0.0, 0.0, 0.0);
+                        pos_vector= list_view.model.returnDataAt(i-1, position_role);
+
+                        // initial spheres
+                        switch(i){
+                        case 1:
+                            scene_3d.s_1_pos = pos_vector;
+                            break;
+                        case 2:
+                            scene_3d.s_2_pos = pos_vector;
+                            break;
+                        case 3:
+                            scene_3d.s_3_pos = pos_vector;
+                            break;
+                        case 4:
+                            scene_3d.s_4_pos = pos_vector;
+                            break;
+                        }
                     }
                 }
             }

@@ -23,8 +23,20 @@ public:
 
     virtual bool hit( const ray &in_ray, qreal t_min, qreal t_max, hit_record &record ) const override;
 
-    QVector3D getPosition() const {
-        return QVector3D( m_center_01.e[0], m_center_01.e[1], m_center_01.e[2] );
+    // implementations of virtual getters
+    virtual QVector3D getPosition() const override {
+        return QVector3D(   m_center_01.e[0],
+                            m_center_01.e[1],
+                            m_center_01.e[2] );
+    }
+    virtual qreal getRadius() const override { return m_radius; }
+
+    // implementation of virtual setters
+    virtual void setRadius( qreal in_radius ) override {
+        m_radius = in_radius;
+    }
+    virtual void setPostion( vec3 in_position ) override {
+        m_center_01 = in_position;
     }
 
 private:

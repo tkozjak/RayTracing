@@ -33,6 +33,8 @@ public:
         return ray( m_origin + offset, m_lower_left_corner + u * m_horizontal + v * m_vertical - m_origin - offset, time );
     }
 
+
+
 private:
     vec3 random_in_unit_disk(){
         vec3 point;

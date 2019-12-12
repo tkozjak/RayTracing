@@ -21,9 +21,9 @@ Entity{
         var cameraUpNormalizedVector = cameraRightNormalizedVector.crossProduct( normalizedCamDirection );
         cameraUpNormalizedVector = cameraUpNormalizedVector.normalized();
 
-        console.log( normalizedCamDirection );
-        console.log( cameraRightNormalizedVector );
-        console.log( cameraUpNormalizedVector );
+//        console.log( normalizedCamDirection );
+//        console.log( cameraRightNormalizedVector );
+//        console.log( cameraUpNormalizedVector );
 
         cameraDirection_n = normalizedCamDirection;
         cameraRight_n = cameraRightNormalizedVector;

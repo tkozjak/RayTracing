@@ -22,13 +22,16 @@ public:
     enum dataItem_roles {
         EntityNameRole = Qt::UserRole+1,
         EntityTypeRole,
-        SpherePositionRole
+        SpherePositionRole,
+        SphereRadiusRole
     };
 
-//    Q_INVOKABLE QString testFunction( int row ){
-//        QModelIndex index;
-//        index.
-//    }
+    // function for getting data items outside of delegate
+    Q_INVOKABLE QVariant returnDataAt( int row, int role = Qt::DisplayRole ){
+        QModelIndex in_index = index(row);
+
+        return data( in_index, role );
+    }
 
     // hash that maps role/enum to role name in qml
     virtual QHash<int, QByteArray> roleNames() const override;

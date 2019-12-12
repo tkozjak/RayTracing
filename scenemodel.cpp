@@ -11,13 +11,14 @@ SceneModel::SceneModel(QObject *parent)
 
 QHash<int, QByteArray> SceneModel::roleNames() const
 {
-//    qDebug() <<"Role names called!";
+    //    qDebug() <<"Role names called!";
 
     QHash<int, QByteArray> roles;
 
     roles[EntityNameRole] = "name";
     roles[EntityTypeRole] = "type";
     roles[SpherePositionRole] = "position";
+    roles[SphereRadiusRole] = "radius";
 
     return roles;
 }
@@ -29,7 +30,7 @@ int SceneModel::rowCount(const QModelIndex &parent) const
     if ( parent.isValid() || !m_scene )
         return 0;
 
-//    qDebug() <<"Row count function called :" << m_scene->entities().size();
+    //    qDebug() <<"Row count function called :" << m_scene->entities().size();
     return m_scene->entities().size();
 
 }
@@ -37,7 +38,7 @@ int SceneModel::rowCount(const QModelIndex &parent) const
 
 QVariant SceneModel::data(const QModelIndex &index, int role) const
 {
-//    qDebug() << "Data called!";
+    //    qDebug() << "Data called!";
 
     if (!index.isValid() || !m_scene )
         return QVariant();
@@ -52,6 +53,8 @@ QVariant SceneModel::data(const QModelIndex &index, int role) const
         return QVariant(entity->getEntityName());
     case EntityTypeRole:
         return QVariant(entity->getEntityType());
+    case SphereRadiusRole:
+        return QVariant( entity->getRadius());
     case SpherePositionRole:
         return static_cast<qsphere*>( m_scene->entities().at(index.row()) )->getPosition();
     }
@@ -61,7 +64,7 @@ QVariant SceneModel::data(const QModelIndex &index, int role) const
 
 bool SceneModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
-//    qDebug() << "Set data called!";
+        qDebug() << "Set data called!";
 
     if(!m_scene)
         return false;
@@ -76,14 +79,17 @@ bool SceneModel::setData(const QModelIndex &index, const QVariant &value, int ro
     case EntityTypeRole:
         current_entity->setEntityType( (entity_type)value.toInt() );
         break;
-//    case SpherePositionRole:
-//        return QVariant(QVector3D(1.0, 1.0, -1.0));
-//        return QVariant("Default postion");
-//        return QVariant( (qsphere*)current_entity->getPosition());
-//        break;
+    case SphereRadiusRole:
+        current_entity->setRadius( value.toReal() );
+        break;
+        //    case SpherePositionRole:
+        //        return QVariant(QVector3D(1.0, 1.0, -1.0));
+        //        return QVariant("Default postion");
+        //        return QVariant( (qsphere*)current_entity->getPosition());
+        //        break;
     }
 
-    if ( m_scene->setEntityAt(index.row(), current_entity ) ) {
+    if ( m_scene->setEntityAt( index.row(), current_entity ) ) {
         emit dataChanged(index, index, QVector<int>() << role);
         return true;
     }
@@ -92,7 +98,7 @@ bool SceneModel::setData(const QModelIndex &index, const QVariant &value, int ro
 
 Qt::ItemFlags SceneModel::flags(const QModelIndex &index) const
 {
-//    qDebug() << "Flags called!";
+    //    qDebug() << "Flags called!";
 
     if (!index.isValid())
         return Qt::NoItemFlags;
@@ -123,7 +129,7 @@ void SceneModel::setScene(main_scene *scene)
         connect(m_scene, &main_scene::preEntityAppended, this, [=]() {
             const int index = m_scene->entities().size();
 
-//            qDebug() << "Pre-append row count :" << index;
+            //            qDebug() << "Pre-append row count :" << index;
             beginInsertRows(QModelIndex(), index, index);
 
         } );
@@ -131,8 +137,8 @@ void SceneModel::setScene(main_scene *scene)
         connect(m_scene, &main_scene::postEntityAppended, this, [=]() {
             endInsertRows();
 
-            const int index = m_scene->entities().size();
-//            qDebug() << "Post-append row count :" << index;
+            //            const int index = m_scene->entities().size();
+            //            qDebug() << "Post-append row count :" << index;
 
         } );
 

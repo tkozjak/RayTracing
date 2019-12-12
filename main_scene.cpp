@@ -21,14 +21,12 @@ main_scene::main_scene(QObject *parent) : QObject(parent)
     m_p_hitable_qentities_list.append(SQ4);
 
     // default camera
-    vec3 lookfrom( 1, 15.5, 5 );
+    vec3 lookfrom( 1, 55.5, 5 );
     vec3 lookat( 0.3, 0, -1 );
     qreal dist_to_focus = ( lookfrom-lookat ).length();
     qreal aperture = 0.0;
 
     m_camera = new camera( this, lookfrom, lookat, vec3( 0, 1, 0 ), 20, qreal(nx)/qreal(ny), aperture, dist_to_focus, 0.0, 100.0, m_random  );
-
-
 
 }
 
@@ -214,16 +212,18 @@ bool main_scene::any_hit(const ray &in_ray, const qreal t_min, const qreal t_max
     return hit_anything;
 }
 
-void main_scene::resetCamera()
+void main_scene::resetCamera( vec3 in_position, vec3 in_lookAt )
 {
+    vec3 lookfrom = in_position;
+    vec3 lookat = in_lookAt;
+
     delete m_camera;
 
-    vec3 lookfrom( 1, 0.5, 5 );
-    vec3 lookat( 0.3, 0, -1 );
+
     qreal dist_to_focus = ( lookfrom-lookat ).length();
     qreal aperture = 0.0;
 
-    m_camera = new camera( this, lookfrom, lookat, vec3( 0, 1, 0 ), 20, qreal(nx)/qreal(ny), aperture, dist_to_focus, 0.0, 100.0, m_random  );
+    m_camera = new camera( this, lookfrom, lookat, vec3( 0, 1, 0 ), 70, qreal(nx)/qreal(ny), aperture, dist_to_focus, 0.0, 100.0, m_random  );
 
 }
 
@@ -236,7 +236,7 @@ void main_scene::appendEntity()
     // model calls data() somewhere here - it fills model with data items for view to display
 
     // create default sphere
-    vec3 pos_vec(5 - m_random->bounded(10.0), 1 - m_random->bounded(2.0), 5 - m_random->bounded(10.0));
+    vec3 pos_vec(25 - m_random->bounded(50.0), 1 - m_random->bounded(2.0), 25 - m_random->bounded(50.0));
     qreal rad = 0.1 + m_random->bounded(2.0);
     hitable_qentity *defaultEntity = new qsphere( "default", this, /*vec3( 1.5, 0.0, -1.0)*/pos_vec, /*vec3( 1.5, 0.0, -1.0)*/pos_vec, 0.0, 100.0, rad, new lambertian( this, vec3(1.0, 0.1, 0.1 ), m_random ));
     m_p_hitable_qentities_list.append(defaultEntity);
