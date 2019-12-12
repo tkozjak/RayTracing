@@ -14,10 +14,10 @@ Entity{
     property alias cam_lookAt : perspective_camera.viewCenter
 
     //default sphere properties
-    property alias s_1_pos : transform_1.translation
-    property alias s_2_pos : transform_2.translation
-    property alias s_3_pos : transform_3.translation
-    property alias s_4_pos : transform_4.translation
+    property alias s_1_pos : sphere_1.position
+    property alias s_2_pos : sphere_2.position
+    property alias s_3_pos : sphere_3.position
+    property alias s_4_pos : sphere_4.position
 
     property alias s_1_m : sphere_1.radius
     property alias s_2_m : sphere_2.radius
@@ -74,83 +74,99 @@ Entity{
         worldDirection: Qt.vector3d( 0.0, -1.0, 0.0 )
     }
 
-    PhongMaterial{
-        id: material_1
-        diffuse: "gray"
-        ambient: "darkgray"
-    }
-
-    Transform {
-        id: transform_1
-        translation: Qt.vector3d(1.5, -1000.0, -1.0)
-        rotation: fromAxisAndAngle(Qt.vector3d(1, 0, 0), 0)
-    }
-
-    Transform {
-        id: transform_2
-        translation: Qt.vector3d(0.0, -1000.5, -1.0)
-        rotation: fromAxisAndAngle(Qt.vector3d(1, 0, 0), 0)
-    }
-
-    Transform {
-        id: transform_3
-        translation: Qt.vector3d(1.1, -1000.0, -1.0)
-        rotation: fromAxisAndAngle(Qt.vector3d(1, 0, 0), 0)
-    }
-
-    Transform {
-        id: transform_4
-        translation: Qt.vector3d(-0.95, -1000.0, -1.2)
-        rotation: fromAxisAndAngle(Qt.vector3d(1, 0, 0), 0)
-    }
-
-    SphereMesh {
+    SphereEntity{
         id: sphere_1
-        radius: 0.5
-        rings: 32
-        slices: 32
     }
 
-    SphereMesh {
+    SphereEntity{
         id: sphere_2
-        radius: 100
-        rings: 64
-        slices: 64
     }
 
-    SphereMesh {
+    SphereEntity{
         id: sphere_3
-        radius: 0.5
-        rings: 32
-        slices: 32
     }
 
-    SphereMesh {
+    SphereEntity{
         id: sphere_4
-        radius: 0.3
-        rings: 32
-        slices: 32
     }
 
-    Entity {
-        id: sphere_entity_1
-        components: [ sphere_1, material_1, transform_1 ]
-    }
+//    PhongMaterial{
+//        id: material_1
+//        diffuse: "gray"
+//        ambient: "darkgray"
+//    }
 
-    Entity {
-        id: sphere_entity_2
-        components: [ sphere_2, material_1, transform_2 ]
-    }
+//    Transform {
+//        id: transform_1
+//        translation: Qt.vector3d(1.5, -1000.0, -1.0)
+//        rotation: fromAxisAndAngle(Qt.vector3d(1, 0, 0), 0)
+//    }
 
-    Entity {
-        id: sphere_entity_3
-        components: [ sphere_3, material_1, transform_3 ]
-    }
+//    Transform {
+//        id: transform_2
+//        translation: Qt.vector3d(0.0, -1000.5, -1.0)
+//        rotation: fromAxisAndAngle(Qt.vector3d(1, 0, 0), 0)
+//    }
 
-    Entity {
-        id: sphere_entity_4
-        components: [ sphere_4, material_1, transform_4 ]
-    }
+//    Transform {
+//        id: transform_3
+//        translation: Qt.vector3d(1.1, -1000.0, -1.0)
+//        rotation: fromAxisAndAngle(Qt.vector3d(1, 0, 0), 0)
+//    }
+
+//    Transform {
+//        id: transform_4
+//        translation: Qt.vector3d(-0.95, -1000.0, -1.2)
+//        rotation: fromAxisAndAngle(Qt.vector3d(1, 0, 0), 0)
+//    }
+
+//    SphereMesh {
+//        id: sphere_1
+//        radius: 0.5
+//        rings: 32
+//        slices: 32
+//    }
+
+//    SphereMesh {
+//        id: sphere_2
+//        radius: 100
+//        rings: 64
+//        slices: 64
+//    }
+
+//    SphereMesh {
+//        id: sphere_3
+//        radius: 0.5
+//        rings: 32
+//        slices: 32
+//    }
+
+//    SphereMesh {
+//        id: sphere_4
+//        radius: 0.3
+//        rings: 32
+//        slices: 32
+//    }
+
+//    Entity {
+//        id: sphere_entity_1
+//        components: [ sphere_1, material_1, transform_1 ]
+//    }
+
+//    Entity {
+//        id: sphere_entity_2
+//        components: [ sphere_2, material_1, transform_2 ]
+//    }
+
+//    Entity {
+//        id: sphere_entity_3
+//        components: [ sphere_3, material_1, transform_3 ]
+//    }
+
+//    Entity {
+//        id: sphere_entity_4
+//        components: [ sphere_4, material_1, transform_4 ]
+//    }
 
     CameraEntity{
 

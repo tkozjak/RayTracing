@@ -229,23 +229,30 @@ Window {
                         var name_role = 257;
                         var type_role = 258;
                         var position_role = 259;
+                        var radius_role = 260;
 
                         var pos_vector = Qt.vector3d(0.0, 0.0, 0.0);
-                        pos_vector= list_view.model.returnDataAt(i-1, position_role);
+                        pos_vector = list_view.model.returnDataAt( i-1, position_role );
+                        var radius
+                        radius = list_view.model.returnDataAt( i-1, radius_role );
 
                         // initial spheres
                         switch(i){
                         case 1:
                             scene_3d.s_1_pos = pos_vector;
+                            scene_3d.s_1_m = radius;
                             break;
                         case 2:
                             scene_3d.s_2_pos = pos_vector;
+                            scene_3d.s_2_m = radius;
                             break;
                         case 3:
                             scene_3d.s_3_pos = pos_vector;
+                            scene_3d.s_3_m = radius;
                             break;
                         case 4:
                             scene_3d.s_4_pos = pos_vector;
+                            scene_3d.s_4_m = radius;
                             break;
                         }
                     }

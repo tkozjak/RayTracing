@@ -7,5 +7,6 @@
         <file>Entities/CameraEntity.qml</file>
         <file>Shaders/cameralines.vert</file>
         <file>Shaders/cameralines.frag</file>
+        <file>Entities/SphereEntity.qml</file>
     </qresource>
 </RCC>

@@ -59,3 +59,5 @@ HEADERS += \
     helper_structs.h \
     main_scene.h \
     qsphere.h
+
+DISTFILES +=
